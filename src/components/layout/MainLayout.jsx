@@ -1,11 +1,10 @@
 import React from 'react'
-import Navbar from '../navBar/Navbar'
 import { Outlet } from 'react-router-dom'
-
+import MyNavbar from '../navBar/Navbar'
 export default function MainLayout() {
   return (
     <>
-      <Navbar/>
+      <MyNavbar/>
     <div className='bg-linear-to-b from-[#589FC7] to-[#00644E]  min-h-screen '>
       
       <Outlet/>

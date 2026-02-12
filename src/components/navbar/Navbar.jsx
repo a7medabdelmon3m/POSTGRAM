@@ -5,7 +5,7 @@ import { FaSearch, FaBars, FaTimes, FaPaperPlane, FaHome, FaChartLine, FaUser, F
 import userImg from '../../assets/images/elwan.png';
 import { authContext } from '../../useContext/authContext';
 
-export default function Navbar() {
+export default function MyNavbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const navigate = useNavigate()
