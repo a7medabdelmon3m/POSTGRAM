@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 80" fill="none">
+  <rect width="300" height="80" fill="transparent"/>
+
+  <circle cx="50" cy="40" r="28" fill="#F7BA1C" />
+
+  <path d="M35 40L65 28L65 52L55 46L48 52L35 40Z" fill="white" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+  
+  <path d="M65 28L55 46L65 52" fill="none" stroke="#F7BA1C" stroke-width="1"/>
+
+  <text x="90" y="50" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-weight="900" font-size="38" fill="#00644E" letter-spacing="0.5">
+    Postgram
+  </text>
+  
+  <text x="92" y="68" font-family="Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-weight="400" font-size="10" fill="#029E75" letter-spacing="1.2">
+    SOCIAL UNIVERSE
+  </text>
+</svg>
