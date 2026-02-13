@@ -9,6 +9,7 @@ import Profile from "../profile/Profile";
 import Dashboard from "../dashboard/Dashboard";
 import AntiProtectedRouter from "../antiProtectedRouter/AntiProtectedRouter";
 import ProtectedRouter from "../protectedRouter/ProtectedRouter";
+import PostDetails from "../postDetails/PostDetails";
 
 const routes = createBrowserRouter([
   {
@@ -28,6 +29,14 @@ const routes = createBrowserRouter([
         element: (
           <ProtectedRouter>
             <Home />
+          </ProtectedRouter>
+        ),
+      },
+      {
+        path: "postDetails/:id",
+        element: (
+          <ProtectedRouter>
+            <PostDetails />
           </ProtectedRouter>
         ),
       },

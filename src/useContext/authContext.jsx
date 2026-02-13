@@ -21,7 +21,6 @@ export default function AuthContextProvider({children}) {
         setUserToken(null) 
     } 
 
-    console.log(userToken);
     
   return (
     <authContext.Provider value={{userToken , setAuthContextToken , clearAuthContextToken}}>

@@ -121,7 +121,7 @@ export default function Login() {
 
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-[#00644E] via-[#029E75] to-[#589FC7] p-4">
+    <div className="min-h-screen flex items-center justify-center   p-4">
       {/* <button onClick={()=> confirmationEvent('sorry , there is problem ! 😥' , '#F2103B')} className="bg-amber-600 p-3">ahmed</button> */}
 
       {/* Container */}

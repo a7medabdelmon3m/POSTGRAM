@@ -9,35 +9,36 @@ import {
 import { FiSend, FiMoreHorizontal } from "react-icons/fi";
 import CardHeader from "../cardHeader/CardHeader";
 import Comment from "../comment/Comment";
+import { Link } from "react-router-dom";
 
-const Post = ({ post }) => {
+const Post = ({ post, isPostDetails }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
   // Destructuring Data
-  const { body, image, user, createdAt, comments } = post;
-  
+  const { body, image, user, createdAt, comments, _id } = post;
+
   const firstComment = comments[0];
+  // console.log(post , isPostDetails);
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg shadow-md mb-8 max-w-md mx-auto md:max-w-lvh overflow-hidden">
-      {/* --- 1. Header (صاحب البوست) --- */}
+    <div className="bg-white/80 backdrop-blur border border-gray-200 rounded-lg shadow-md mb-8 max-w-md mx-auto md:max-w-lvh overflow-hidden">
+      {/* . Header */}
       <div className="flex items-center justify-between p-3 border-b border-gray-100">
-        <CardHeader user={user} date={createdAt} cat = {'post'} ></CardHeader>
+        <CardHeader user={user} date={createdAt} cat={"post"}></CardHeader>
         <button className="text-gray-400 hover:text-[#02624B]">
           <FiMoreHorizontal size={20} />
         </button>
       </div>
 
-      {/* --- 2. Post Body (النص) --- */}
-      {/* رجعتلك النص هنا فوق الصورة وبخط واضح */}
+      {/*  Post Body (النص) */}
       <div className="px-4 py-3">
         <p className="text-gray-800 text-sm leading-relaxed dir-auto whitespace-pre-wrap">
           {body}
         </p>
       </div>
 
-      {/* --- 3. Post Image (الصورة) --- */}
+      {/*  Post Image  */}
       {image && (
         <div className="w-full bg-gray-50 border-t border-b border-gray-100">
           <img
@@ -48,7 +49,7 @@ const Post = ({ post }) => {
         </div>
       )}
 
-      {/* --- 4. Action Bar (التفاعل) --- */}
+      {/* reacts  */}
       <div className="px-3 py-2 flex justify-between items-center mt-1">
         <div className="flex space-x-5 text-2xl text-gray-600">
           <button
@@ -74,7 +75,7 @@ const Post = ({ post }) => {
             className="text-2xl text-gray-600 hover:scale-110 transition-transform"
           >
             {isSaved ? (
-              <BsFillBookmarkFill className="text-[#F7BA1C]" /> // البوكمارك بالأصفر
+              <BsFillBookmarkFill className="text-[#F7BA1C]" /> 
             ) : (
               <BsBookmark className="hover:text-[#F7BA1C]" />
             )}
@@ -88,19 +89,34 @@ const Post = ({ post }) => {
           {comments?.length || 0} Likes
         </p>
 
-        {/* --- منطقة الكومنت الاستاتيك (المفصولة) --- */}
-        {/* عملت خلفية رمادي فاتح جداً عشان تفصل عن البوست الأبيض */}
+        {/* comments*/}
+
         {firstComment && (
           <div className="mt-3 bg-gray-200 p-3 rounded-lg border-l-4 border-[#F7BA1C]">
-            {/* زرار عرض الكومنتات السابقة */}
-            {comments?.length > 0 && (
-              <button className="text-[#589FC7] text-xs font-medium mb-2 hover:underline">
+            {/* view all comments link*/}
+            {!isPostDetails && comments?.length > 0 && (
+              <Link
+                to={`/postDetails/${_id}`}
+                className="text-[#589FC7] text-xs font-medium mb-2 hover:underline"
+              >
                 View all {comments.length} comments
-              </button>
+              </Link>
             )}
 
-            {/* الكومنت الاستاتيك (مثال ثابت) */}
-            <Comment commentDetails = {firstComment} ></Comment>
+            
+            {/* <Comment commentDetails = {firstComment} ></Comment> */}
+            {isPostDetails ? (
+            
+              comments?.map((comment) => (
+                <Comment
+                  key={comment._id || comment.id}
+                  commentDetails={comment}
+                />
+              ))
+            ) : (
+             
+              <Comment commentDetails={firstComment} />
+            )}
           </div>
         )}
       </div>
@@ -115,7 +131,7 @@ const Post = ({ post }) => {
           placeholder="Add a comment..."
           className="flex-1 outline-none text-sm mx-2 text-gray-700 placeholder-gray-400 bg-transparent"
         />
-        {/* زرار البوست بالأزرق بتاعك */}
+        {/* button*/}
         <button className="text-[#589FC7] font-bold text-sm hover:text-[#02624B] transition-colors disabled:opacity-50">
           Post
         </button>
