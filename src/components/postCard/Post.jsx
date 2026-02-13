@@ -91,7 +91,7 @@ const Post = ({ post }) => {
         {/* --- منطقة الكومنت الاستاتيك (المفصولة) --- */}
         {/* عملت خلفية رمادي فاتح جداً عشان تفصل عن البوست الأبيض */}
         {firstComment && (
-          <div className="mt-3 bg-gray-50 p-3 rounded-lg border-l-4 border-[#F7BA1C]">
+          <div className="mt-3 bg-gray-200 p-3 rounded-lg border-l-4 border-[#F7BA1C]">
             {/* زرار عرض الكومنتات السابقة */}
             {comments?.length > 0 && (
               <button className="text-[#589FC7] text-xs font-medium mb-2 hover:underline">

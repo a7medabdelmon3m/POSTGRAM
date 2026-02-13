@@ -39,14 +39,18 @@ export default function Home() {
         headers: { token: localStorage.getItem("postGramTkn") },
       })
   }
-  const {data , isLoading, isError , isFetching} =  useQuery({
+  const {data , isLoading, isError , isFetching , refetch} =  useQuery({
     queryKey:['getPosts'],
     queryFn:getAllPosts,
+    // refetchOnMount:false,
+    // refetchInterval:3000 * 60,
+    // retry:5,
+    // retryDelay:2000,
+    // staleTime:5000,
+    // gcTime:3000,
+    enabled:!!localStorage.getItem("postGramTkn") ,
   });
-  console.log("data" ,data);
-  console.log("isLoading" ,isLoading);
-  console.log("isError" ,isError);
-  console.log("isFetching" ,isFetching);
+  
   
   if (isLoading) {
     return <Loading />;

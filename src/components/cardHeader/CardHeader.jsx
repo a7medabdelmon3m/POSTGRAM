@@ -18,7 +18,7 @@ export default function CardHeader({ user, date ,commentContent ,cat  }) {
   return (
     cat === 'comment' ? 
         <div className="flex items-start space-x-3">
-            {console.log(photo)
+            {
             }
       <img
         src={photo}
@@ -35,7 +35,7 @@ export default function CardHeader({ user, date ,commentContent ,cat  }) {
         </p>
             <GoDotFill size={8} color="gray" />
         <p className="text-xs text-gray-400">{convertDate(date)}</p>
-        {console.log(date)
+        {
         }
        </div>
        {/* comment content  */}
