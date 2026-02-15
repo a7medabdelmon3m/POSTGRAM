@@ -56,7 +56,7 @@ function getPostById(){
       
       return (
         <div className='min-h-screen pt-6'> 
-            <Post post={postDetails} isPostDetails ></Post>
+            <Post post={postDetails} isPostDetails queryKey= {['getPostById' ,id]} ></Post>
         </div>
       )
 }

@@ -10,25 +10,32 @@ import { FiSend, FiMoreHorizontal } from "react-icons/fi";
 import CardHeader from "../cardHeader/CardHeader";
 import Comment from "../comment/Comment";
 import { Link } from "react-router-dom";
+import PostSettings from "../postSettings/PostSettings";
+import CommentCreation from "../commentCreation/CommentCreation";
 
 const Post = ({ post, isPostDetails }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [isHidden, setIsHidden] = useState(true) ; 
+  function handlePostSetting(){
+    setIsHidden(!isHidden) ; 
+  }
 
   // Destructuring Data
   const { body, image, user, createdAt, comments, _id } = post;
 
   const firstComment = comments[0];
-  // console.log(post , isPostDetails);
+  // console.log(_id);
 
   return (
-    <div className="bg-white/80 backdrop-blur border border-gray-200 rounded-lg shadow-md mb-8 max-w-md mx-auto md:max-w-lvh overflow-hidden">
+    <div className=" relative z-0 bg-white/80 backdrop-blur border border-gray-200 rounded-lg shadow-md mb-8 max-w-md mx-auto md:max-w-lvh ">
       {/* . Header */}
       <div className="flex items-center justify-between p-3 border-b border-gray-100">
         <CardHeader user={user} date={createdAt} cat={"post"}></CardHeader>
-        <button className="text-gray-400 hover:text-[#02624B]">
+        <button onClick={handlePostSetting} className="text-gray-400 hover:text-[#02624B]">
           <FiMoreHorizontal size={20} />
         </button>
+        <PostSettings  isHidden={isHidden} user={user} isMyPost={false}  ></PostSettings>
       </div>
 
       {/*  Post Body (النص) */}
@@ -40,7 +47,7 @@ const Post = ({ post, isPostDetails }) => {
 
       {/*  Post Image  */}
       {image && (
-        <div className="w-full bg-gray-50 border-t border-b border-gray-100">
+        <div className="w-full overflow-hidden bg-gray-50 border-t border-b border-gray-100">
           <img
             src={image}
             alt="post content"
@@ -122,20 +129,7 @@ const Post = ({ post, isPostDetails }) => {
       </div>
 
       {/* --- 6. Add Comment Input --- */}
-      <div className="flex items-center p-3 border-t border-gray-100 bg-white">
-        <button className="text-gray-400 hover:text-[#F7BA1C] pr-2 transition-colors">
-          <BsEmojiSmile size={22} />
-        </button>
-        <input
-          type="text"
-          placeholder="Add a comment..."
-          className="flex-1 outline-none text-sm mx-2 text-gray-700 placeholder-gray-400 bg-transparent"
-        />
-        {/* button*/}
-        <button className="text-[#589FC7] font-bold text-sm hover:text-[#02624B] transition-colors disabled:opacity-50">
-          Post
-        </button>
-      </div>
+        <CommentCreation postId={_id}></CommentCreation>
     </div>
   );
 };

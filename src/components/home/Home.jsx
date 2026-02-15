@@ -87,7 +87,7 @@ export default function Home() {
   return (
     <div className="container mx-auto py-8">
       {allPosts?.map((post) => (
-        <Post key={post._id} post={post} isPostDetails={false} />
+        <Post key={post._id} post={post} isPostDetails={false} queryKey ={['getPosts']} />
       ))}
     </div>
   );
