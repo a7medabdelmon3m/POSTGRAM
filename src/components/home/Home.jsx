@@ -5,6 +5,7 @@ import { FaLessThan } from "react-icons/fa6";
 import Loading from "../loading/Loading";
 import { BiErrorCircle } from "react-icons/bi";
 import { useQuery } from "@tanstack/react-query";
+import PostCreation from "../postCreation/PostCreation";
 
 export default function Home() {
   // const [allPosts, setAllPosts] = useState(null);
@@ -35,8 +36,8 @@ export default function Home() {
   // }, []);
   function getAllPosts(){
     return axios
-      .get("https://linked-posts.routemisr.com/posts?sort=-createdAt", {
-        headers: { token: localStorage.getItem("postGramTkn") },
+      .get("https://route-posts.routemisr.com/posts?sort=-createdAt", {
+        headers: { AUTHORIZATION: `Bearer ${localStorage.getItem("postGramTkn")}`},
       })
   }
   const {data , isLoading, isError , isFetching , refetch} =  useQuery({
@@ -82,10 +83,12 @@ export default function Home() {
       </div>
     );
   }
-  const allPosts = data.data.posts ;
+  const allPosts = data.data.data.posts ;
+// console.log(data.data.data.posts);
 
   return (
     <div className="container mx-auto py-8">
+      <PostCreation/>
       {allPosts?.map((post) => (
         <Post key={post._id} post={post} isPostDetails={false} queryKey ={['getPosts']} />
       ))}

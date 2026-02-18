@@ -5,7 +5,7 @@
 import { FcBearish } from "react-icons/fc";
 import './App.css'
 import MainRouter from './components/router/MainRouter';
-import { HeroUIProvider } from "@heroui/react";
+import { HeroUIProvider, ToastProvider } from "@heroui/react";
 import AuthContextProvider from "./useContext/authContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
@@ -17,6 +17,7 @@ const queryClientConfig = new QueryClient()
     <QueryClientProvider client={queryClientConfig}>
       <AuthContextProvider>
         <HeroUIProvider>
+                <ToastProvider />
             <MainRouter />
         </HeroUIProvider>
       </AuthContextProvider>

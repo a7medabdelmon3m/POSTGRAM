@@ -15,6 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { PulseLoader } from "react-spinners";
+import { CiAt } from "react-icons/ci";
 
 function confirmationEvent(msg, bg) {
   Swal.fire({
@@ -26,8 +27,8 @@ function confirmationEvent(msg, bg) {
     color: "white",
     width: "fit-content",
     didOpen: () => {
-      const title = Swal.getTitle(); 
-      title.style.fontSize = "16px"; 
+      const title = Swal.getTitle();
+      title.style.fontSize = "16px";
     },
   });
 }
@@ -36,24 +37,28 @@ const registerSchema = z
   .object({
     name: z
       .string()
-      .min(1, "zod:Name is required !!!")
-      .min(3, "zodthe name must be at least 3 characters")
-      .max(15, "zodthe name must be at most 15 characters"),
+      .min(1, "Name is required !!!")
+      .min(3, "the name must be at least 3 characters")
+      .max(15, "the name must be at most 15 characters"),
+
+    username: z
+      .string()
+      .regex(/^$|^[a-z0-9_]{3,30}$/, "Username must be 3-30 chars (a-z, 0-9, _) or empty"),
 
     email: z
       .string()
-      .min(1, "zodEmail is required !!!")
-      .email("zodEmail format is invalid !!!"),
+      .min(1, "Email is required !!!")
+      .email("Email format is invalid !!!"),
 
     password: z
       .string()
-      .min(1, "zodPassword is required !!!")
+      .min(1, "Password is required !!!")
       .regex(
         /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*-+=])(?!\s).{8,20}$/,
         "Password is too weak",
       ),
 
-    rePassword: z.string().min(1, "zodConfirmation is required !!!"),
+    rePassword: z.string().min(1, "Confirmation is required !!!"),
 
     dateOfBirth: z.coerce.date("invalid date !!!").refine(
       (date) => {
@@ -68,15 +73,15 @@ const registerSchema = z
         }
         return age >= 18;
       },
-      { message: "zod Age must be at least 18 years !!!" },
+      { message: "Age must be at least 18 years !!!" },
     ),
 
     gender: z.enum(["male", "female"], {
-      errorMap: () => ({ message: " zod Gender is required !!!" }),
+      errorMap: () => ({ message: "Gender is required !!!" }),
     }),
   })
   .refine((data) => data.password === data.rePassword, {
-    message: "zod Passwords do not match !!",
+    message: "Passwords do not match !!",
     path: ["rePassword"],
   });
 
@@ -95,7 +100,7 @@ export default function Register() {
   //   console.log(val);
 
   //  }
-  const navigate = useNavigate() ; 
+  const navigate = useNavigate();
   const [showLoading, setShowLoading] = useState(false);
   const {
     handleSubmit,
@@ -108,6 +113,7 @@ export default function Register() {
   } = useForm({
     defaultValues: {
       name: "",
+      username: "",
       email: "",
       password: "",
       rePassword: "",
@@ -125,17 +131,21 @@ export default function Register() {
     // console.log(data);
     setShowLoading(true);
     axios
-      .post("https://linked-posts.routemisr.com/users/signup", vals)
+      .post("https://route-posts.routemisr.com/users/signup", vals, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
       .then(function (resp) {
-        console.log("resp", resp.data.message);
+        console.log("resp", resp.response?.data?.message);
         confirmationEvent("Congratulation 👌", "#5CB85D");
         setTimeout(() => {
-        navigate('/login') ;
+          navigate("/login");
         }, 1000);
       })
       .catch(function (error) {
-        console.log("ERROR", error.response.data.error);
-        const msg = error.response.data.error || "Something went wrong";
+        console.log("ERROR", error.response?.data?.errors);
+        const msg = error.response?.data?.errors || "Something went wrong";
         confirmationEvent(msg, "#F2103B");
       })
       .finally(function () {
@@ -146,7 +156,7 @@ export default function Register() {
   // const obj =  register('name')
   // console.log(formState.errors) ;
 
-  const passwordValue = watch("password");
+  // const passwordValue = watch("password");
 
   return (
     <div className="min-h-screen flex items-center justify-center  p-4">
@@ -192,6 +202,39 @@ export default function Register() {
             {formState.errors.name && formState.touchedFields.name && (
               <p className="text-red-700 text-sm font-semibold ml-2 mt-1">
                 {formState.errors.name?.message}
+              </p>
+            )}
+          </div>
+          {/* First username */}
+          <div className="relative group">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <CiAt className="text-[#065F48] group-focus-within:text-[#F7BA1C] transition-colors duration-300" />
+            </div>
+            <input
+              // onChange={getUsernameValue}
+              // value={usernameValue}
+              {...register(
+                "username",
+                //  {
+                //   // required:true
+                //   required: { value: true, message: "Name Is Required !!" },
+                //   minLength: {
+                //     value: 3,
+                //     message: "Name Must Be At Least 3 Characters !!",
+                //   },
+                //   maxLength: {
+                //     value: 15,
+                //     message: "Name Must Be At Most 15 Characters !!",
+                //   },
+                // }
+              )}
+              type="text"
+              placeholder="Username (Optional)"
+              className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#00644E] focus:ring-1 focus:ring-[#00644E] transition-all bg-gray-50"
+            />
+            {formState.errors.username && formState.touchedFields.username && (
+              <p className="text-red-700 text-sm font-semibold ml-2 mt-1">
+                {formState.errors.username?.message}
               </p>
             )}
           </div>
@@ -343,7 +386,8 @@ export default function Register() {
                 })}
                 className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#00644E] focus:ring-1 focus:ring-[#00644E] transition-all bg-gray-50 text-gray-500 appearance-none"
               >
-                <option value="" disabled selected>
+                <option value="" disabled defaultValue=""
+                >
                   Select Gender
                 </option>
                 <option value="male">Male</option>

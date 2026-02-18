@@ -27,31 +27,30 @@ function confirmationEvent(msg, bg) {
     color: "white",
     width: "fit-content",
     didOpen: () => {
-      const title = Swal.getTitle(); 
-      title.style.fontSize = "16px"; 
+      const title = Swal.getTitle();
+      title.style.fontSize = "16px";
     },
   });
 }
 
-const registerSchema = z
-  .object({
-    
-    email: z
-      .string()
-      .min(1, "zodEmail is required !!!")
-      .email("zodEmail format is invalid !!!"),
+const registerSchema = z.object({
+  email: z
+    .string()
+    .min(1, "Email or Username is required !!!")
+    .refine((val) => {
+      const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+      const isUsername = /^[a-z0-9_]{3,30}$/.test(val);
+      return isEmail || isUsername;
+    }, "Please enter a valid Email or Username"),
 
-    password: z
-      .string()
-      .min(1, "zodPassword is required !!!")
-      .regex(
-        /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*-+=])(?!\s).{8,20}$/,
-        "Password is too weak",
-      ),
-
-    
-  })
-  
+  password: z
+    .string()
+    .min(1, "zodPassword is required !!!")
+    .regex(
+      /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*-+=])(?!\s).{8,20}$/,
+      "Password is too weak",
+    ),
+});
 
 export default function Login() {
   // Libraries( formik ,react-hook-form (RHF) ) => get values and put values from and in inputs + validation
@@ -68,8 +67,8 @@ export default function Login() {
   //   console.log(val);
 
   //  }
-   const {userToken , setAuthContextToken} = useContext(authContext)
-  const navigate = useNavigate() ; 
+  const { userToken, setAuthContextToken } = useContext(authContext);
+  const navigate = useNavigate();
   const [showLoading, setShowLoading] = useState(false);
   const {
     handleSubmit,
@@ -83,7 +82,6 @@ export default function Login() {
     defaultValues: {
       email: "",
       password: "",
-      
     },
     mode: "onSubmit",
     resolver: zodResolver(registerSchema),
@@ -96,19 +94,25 @@ export default function Login() {
     // console.log(data);
     setShowLoading(true);
     axios
-      .post("https://linked-posts.routemisr.com/users/signin", vals)
+      .post("https://route-posts.routemisr.com/users/signin", vals, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
       .then(function (resp) {
-        setAuthContextToken(resp.data.token)
-        localStorage.setItem('postGramTkn' , resp.data.token)
+        setAuthContextToken(resp.data.data.token);
+        localStorage.setItem("postGramTkn", resp.data.data.token);
         confirmationEvent("Welcome Back 🥰", "#5CB85D");
         setTimeout(() => {
-        navigate('/home') ;
+          navigate("/home");
         }, 1000);
       })
       .catch(function (error) {
-        console.log("ERROR", error.response.data.error);
-        
-        const msg = error.response.data.error || "Something went wrong";
+        console.log("ERROR", error.response?.data?.message);
+
+        const msg = error.response?.data?.errors || 
+                error.response?.data?.message || 
+                "Something went wrong";
         confirmationEvent(msg, "#F2103B");
       })
       .finally(function () {
@@ -118,7 +122,6 @@ export default function Login() {
 
   // const obj =  register('name')
   // console.log(formState.errors) ;
-
 
   return (
     <div className="min-h-screen flex items-center justify-center   p-4">
@@ -134,7 +137,6 @@ export default function Login() {
           onSubmit={handleSubmit(myHandleSubmit)}
           className="px-8 pb-8 space-y-5"
         >
-          
           {/* Email */}
           <div className="relative group">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -193,21 +195,15 @@ export default function Login() {
                   </p>
                 )}
             </div>
-            
           </div>
 
-          
           {/* Submit Button */}
           <button
             disabled={showLoading}
             type="submit"
             className="w-full bg-[#00644E] text-white font-bold py-3 rounded-xl hover:bg-[#065F48] shadow-lg hover:shadow-[#F7BA1C]/40 transform hover:-translate-y-1 transition-all duration-300"
           >
-            {showLoading ? (
-              <PulseLoader color="#F7BA1C" size={8} />
-            ) : (
-              "Login"
-            )}
+            {showLoading ? <PulseLoader color="#F7BA1C" size={8} /> : "Login"}
           </button>
 
           {/* Footer */}
