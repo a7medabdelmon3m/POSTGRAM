@@ -23,6 +23,7 @@ import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { button } from "framer-motion/client";
 import { authContext } from "../../useContext/authContext";
+import { PulseLoader } from "react-spinners";
 // import { body } from "framer-motion/client";
 
 export default function PostCreation() {
@@ -206,8 +207,14 @@ export default function PostCreation() {
                       disabled={
                         isPending || (!postConrent.trim() && !imagePreview)
                       }
+
                     >
-                      post
+                      {isPending ? 
+                      <div className="flex items-center">
+                      <PulseLoader color="#F7BA1C" size={4} />  
+                      </div>
+                       
+                       : "post"}
                     </Button>
                   </ModalFooter>
                 </>
