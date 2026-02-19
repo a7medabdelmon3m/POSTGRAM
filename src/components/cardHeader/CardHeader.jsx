@@ -22,7 +22,7 @@ export default function CardHeader({
   //   console.log(user);
 
   return cat === "comment" ? (
-    <div className="flex items-start space-x-3">
+    <div className="flex  items-start space-x-3">
       {}
       <img
         src={photo}

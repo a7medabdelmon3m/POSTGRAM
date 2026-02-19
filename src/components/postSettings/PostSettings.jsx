@@ -7,7 +7,6 @@ import {
   Button,
   cn,
 } from "@heroui/react";
-// استيراد الأيقونات اللي محتاجينها
 import {
   BsThreeDots,
   BsBookmark,
@@ -19,13 +18,11 @@ import { FiEdit3, FiTrash2, FiShare2, FiAlertCircle } from "react-icons/fi";
 
 export default function PostSettings({ user, isMyPost }) {
   const { name } = user;
-  // كلاس ثابت للأيقونات عشان التنسيق يبقى موحد
   const iconClasses = "text-xl text-default-500 pointer-events-none shrink-0";
 
   return (
-    <Dropdown placement="bottom-end">
+    <Dropdown  placement="bottom-end">
       <DropdownTrigger>
-        {/* الزرار اللي بيفتح المنيو (3 نقط) */}
         <Button
           variant="light"
           isIconOnly
@@ -37,7 +34,6 @@ export default function PostSettings({ user, isMyPost }) {
       </DropdownTrigger>
 
       <DropdownMenu aria-label="Post Actions" variant="faded">
-        {/* --- الأكشنز العامة لكل الناس --- */}
         <DropdownItem
           key="save"
           startContent={<BsBookmark className={iconClasses} />}
@@ -59,7 +55,6 @@ export default function PostSettings({ user, isMyPost }) {
           Share via...
         </DropdownItem>
 
-        {/* --- أكشنز صاحب البوست (تظهر بشرط) --- */}
         {isMyPost && (
           <DropdownItem
             key="edit"
@@ -82,10 +77,9 @@ export default function PostSettings({ user, isMyPost }) {
           </DropdownItem>
         )}
 
-        {/* --- قسم الخصوصية والمتابعة --- */}
         <DropdownItem
           key="hide"
-          showDivider={!isMyPost} // لو مش بوستي حط خط فاصل
+          showDivider={!isMyPost}
           startContent={<BsEyeSlash className={iconClasses} />}
         >
           Hide Post

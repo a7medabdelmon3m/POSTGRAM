@@ -40,44 +40,23 @@ const Post = ({ post, isPostDetails }) => {
       },
     );
   }
- const {data ,isError , isSuccess, isLoading,isFetched} =  useQuery({
-  queryKey:['getComments',_id],
-  queryFn:handleGetPostComments,
-  enabled:!!localStorage.getItem("postGramTkn")
+  const { data, isError, isSuccess, isLoading, isFetched } = useQuery({
+    queryKey: ["getComments", _id],
+    queryFn: handleGetPostComments,
+    enabled: !!localStorage.getItem("postGramTkn"),
+  });
 
- })
-
- const comments = data?.data?.data?.comments ;
+  const comments = data?.data?.data?.comments;
   return (
-    <div className="bg-white border border-gray-200 rounded-xl shadow-sm mb-6 max-w-md mx-auto md:max-w-2xl overflow-visible font-sans relative">
+    <div className="bg-white border border-gray-200 rounded-xl shadow-sm mb-6 max-w-md mx-auto md:max-w-2xl overflow-hidden font-sans relative">
       {/* 1. Header Section */}
-      <div className="flex items-center justify-between px-4 py-3 relative z-20">
+      <div className="flex items-center justify-between px-4 py-3 relative bg-[#F0F2F5] ">
         <CardHeader user={user} date={createdAt} cat={"post"} />
-
-        {/* Dropdown Menu Area */}
-        <div className="relative">
-          <button
-            onClick={toggleSettings}
-            className="text-gray-500 hover:bg-gray-100 p-2 rounded-full transition-colors"
-          >
-            <FiMoreHorizontal size={20} />
-          </button>
-
-          {/* Dropdown Logic */}
-          {isSettingsOpen && (
-            <div className="absolute right-0 top-12 w-48 z-50 shadow-lg rounded-lg">
-              <PostSettings
-                isHidden={!isSettingsOpen}
-                user={user}
-                isMyPost={false}
-              />
-            </div>
-          )}
-        </div>
+        <PostSettings user={user} isMyPost={false} />
       </div>
 
       {/* 2. Post Body */}
-      <div className="px-4 pb-2 z-0 relative">
+      <div className="p-4 z-0 relative">
         <p className="text-gray-900 text-[15px] leading-normal dir-auto whitespace-pre-wrap">
           {body}
         </p>
@@ -182,17 +161,19 @@ const Post = ({ post, isPostDetails }) => {
         )}
 
         <div className="flex flex-col gap-2">
-          {isPostDetails?
-          isLoading? 
-          <SyncLoader
-          color="#F7BF2D"
-          size={10}
-        /> :
-          comments.length > 0 ? comments.map((comment) => (
+          {isPostDetails ? (
+            isLoading ? (
+              <SyncLoader color="#F7BF2D" size={10} />
+            ) : comments.length > 0 ? (
+              comments.map((comment) => (
                 <Comment key={comment._id} commentDetails={comment} />
               ))
-              :<NoComments/>
-            : firstComment && <Comment commentDetails={firstComment} />}
+            ) : (
+              <NoComments />
+            )
+          ) : (
+            firstComment && <Comment commentDetails={firstComment} />
+          )}
         </div>
 
         <div className="mt-3">
