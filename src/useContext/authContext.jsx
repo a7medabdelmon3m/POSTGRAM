@@ -7,6 +7,10 @@ export default function AuthContextProvider({children}) {
     const [userToken, setUserToken] = useState(function(){
         return localStorage.getItem('postGramTkn') ; 
     })
+    const [user, setUser] = useState(
+        function(){
+        return JSON.parse( localStorage.getItem('userData')) ; }
+    )
     // useEffect(function(){
     //     const tokenVaue = localStorage.getItem('postGramTkn') ; 
     //     if(tokenVaue !== null){
@@ -23,7 +27,7 @@ export default function AuthContextProvider({children}) {
 
     
   return (
-    <authContext.Provider value={{userToken , setAuthContextToken , clearAuthContextToken}}>
+    <authContext.Provider value={{userToken , setAuthContextToken , clearAuthContextToken , user , setUser}}>
         {children}
     </authContext.Provider>
     

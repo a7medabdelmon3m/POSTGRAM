@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import {
   Avatar,
   Card,
@@ -22,6 +22,7 @@ import { BiPointer } from "react-icons/bi";
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { button } from "framer-motion/client";
+import { authContext } from "../../useContext/authContext";
 // import { body } from "framer-motion/client";
 
 export default function PostCreation() {
@@ -92,6 +93,7 @@ export default function PostCreation() {
     setpostConrent("");
     onOpenChange(false);
   }
+  const {user} =  useContext(authContext)
  
   return (
     
@@ -103,7 +105,7 @@ export default function PostCreation() {
               className="w-10 h-10 bg-red-500"
               isBordered
               color="warning"
-              src="https://i.pravatar.cc/150?u=a04258114e29026702d"
+              src={user.photo}
             />
 
             <div
@@ -115,7 +117,7 @@ export default function PostCreation() {
                 className="max-w-full "
                 color={success}
                 //   ahmed is changed later
-                defaultValue="What are you thinking Ahmed?"
+                defaultValue={`What are you thinking ${user.name}?`}
                 type="text"
               />
             </div>
@@ -137,14 +139,14 @@ export default function PostCreation() {
                             radius="full"
                             color="warning"
                             size="md"
-                            src="https://heroui.com/avatars/avatar-1.png"
+                            src={user.photo}
                           />
                           <div className="flex flex-col gap-1 items-start justify-center">
                             <h4 className="text-small font-semibold leading-none text-default-600">
-                              Ahmed
+                              {user.name}
                             </h4>
                             <h5 className="text-small tracking-tight text-default-400">
-                              @ahmed123
+                              @{user.username}
                             </h5>
                           </div>
                         </div>
@@ -159,7 +161,7 @@ export default function PostCreation() {
                         setpostConrent(e.target.value);
                       }}
                       className="w-full"
-                      placeholder="What are you thinking Ahmed?"
+                      placeholder={`What are you thinking ${user.name}?`}
                     />
                     {imagePreview && (
                       <div className="w-full relative">

@@ -29,6 +29,7 @@ export default function MyNavbar() {
 
   function handleLogOut() {
     localStorage.removeItem("postGramTkn");
+    localStorage.removeItem("userData");
     clearAuthContextToken();
     navigate("/login");
   }
@@ -149,27 +150,30 @@ export default function MyNavbar() {
         className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden bg-white border-t border-gray-100 ${isOpen ? "max-h-[500px] opacity-100 shadow-lg" : "max-h-0 opacity-0"}`}
       >
         <div className="px-4 pt-4 pb-6 space-y-4">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-full bg-gray-100 text-gray-700 placeholder-gray-400 rounded-lg py-2 pl-9 pr-4 focus:outline-none focus:ring-1 focus:ring-[#00644E] text-sm"
-            />
-            <FaSearch className="absolute left-3 top-2.5 text-gray-400 text-xs" />
-          </div>
-
-          <Link
-            to="/home"
-            className="flex items-center gap-3 text-gray-700 hover:text-[#00644E] hover:bg-gray-50 px-2 py-2 rounded-lg transition-colors font-medium"
-          >
-            <FaHome size={16} /> Home
-          </Link>
-          <Link
-            to="/dashboard"
-            className="flex items-center gap-3 text-gray-700 hover:text-[#00644E] hover:bg-gray-50 px-2 py-2 rounded-lg transition-colors font-medium"
-          >
-            <FaChartLine size={16} /> Dashboard
-          </Link>
+          {isUserLogin && (
+            <>
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  className="w-full bg-gray-100 text-gray-700 placeholder-gray-400 rounded-lg py-2 pl-9 pr-4 focus:outline-none focus:ring-1 focus:ring-[#00644E] text-sm"
+                />
+                <FaSearch className="absolute left-3 top-2.5 text-gray-400 text-xs" />
+              </div>
+              <Link
+                to="/home"
+                className="flex items-center gap-3 text-gray-700 hover:text-[#00644E] hover:bg-gray-50 px-2 py-2 rounded-lg transition-colors font-medium"
+              >
+                <FaHome size={16} /> Home
+              </Link>
+              <Link
+                to="/dashboard"
+                className="flex items-center gap-3 text-gray-700 hover:text-[#00644E] hover:bg-gray-50 px-2 py-2 rounded-lg transition-colors font-medium"
+              >
+                <FaChartLine size={16} /> Dashboard
+              </Link>
+            </>
+          )}
 
           {/* Mobile Profile Actions */}
           {isUserLogin && (
