@@ -123,7 +123,7 @@ export default function PostCreation() {
         </Card>
         <>
           {/* <Button onPress={onOpen}>Open Modal</Button> */}
-          <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+          <Modal isOpen={isOpen} placement="center" onOpenChange={onOpenChange}>
             <ModalContent>
               {() => (
                 <>
