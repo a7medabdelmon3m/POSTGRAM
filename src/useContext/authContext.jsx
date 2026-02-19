@@ -9,7 +9,7 @@ export default function AuthContextProvider({children}) {
     })
     const [user, setUser] = useState(
         function(){
-        return JSON.parse( localStorage.getItem('userData')) ; }
+        return localStorage.getItem('userData') ? JSON.parse( localStorage.getItem('userData')) : {}  ; }
     )
     // useEffect(function(){
     //     const tokenVaue = localStorage.getItem('postGramTkn') ; 

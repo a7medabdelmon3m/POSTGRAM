@@ -105,7 +105,7 @@ export default function PostCreation() {
               className="w-10 h-10 bg-red-500"
               isBordered
               color="warning"
-              src={user.photo}
+              src={user?.photo}
             />
 
             <div
@@ -117,7 +117,7 @@ export default function PostCreation() {
                 className="max-w-full "
                 color={success}
                 //   ahmed is changed later
-                defaultValue={`What are you thinking ${user.name}?`}
+                defaultValue={`What are you thinking ${user?.name}?`}
                 type="text"
               />
             </div>
@@ -139,14 +139,14 @@ export default function PostCreation() {
                             radius="full"
                             color="warning"
                             size="md"
-                            src={user.photo}
+                            src={user?.photo}
                           />
                           <div className="flex flex-col gap-1 items-start justify-center">
                             <h4 className="text-small font-semibold leading-none text-default-600">
-                              {user.name}
+                              {user?.name}
                             </h4>
                             <h5 className="text-small tracking-tight text-default-400">
-                              @{user.username}
+                              @{user?.username}
                             </h5>
                           </div>
                         </div>
@@ -161,7 +161,7 @@ export default function PostCreation() {
                         setpostConrent(e.target.value);
                       }}
                       className="w-full"
-                      placeholder={`What are you thinking ${user.name}?`}
+                      placeholder={`What are you thinking ${user?.name}?`}
                     />
                     {imagePreview && (
                       <div className="w-full relative">
