@@ -1,47 +1,47 @@
 import React, { useState, useRef } from "react";
 // ضفنا Image هنا في الـ import
-import { Image } from "@heroui/react"; 
+import { Image } from "@heroui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { IoCameraOutline, IoSend } from "react-icons/io5";
 import { BsEmojiSmile } from "react-icons/bs";
 import { IoMdCloseCircleOutline } from "react-icons/io";
+import { FadeLoader, MoonLoader } from "react-spinners";
 // import { url } from "zod/v4-mini";
 
 export default function CommentCreation({ postId, queryKey }) {
   const [commentValue, setCommentValue] = useState("");
   const [isFocused, setIsFocused] = useState(false);
-  const [imagePreview, setimagePreview]= useState(null);
+  const [imagePreview, setimagePreview] = useState(null);
   const textareaRef = useRef(null);
   const imgRef = useRef(null);
   const queryClientObj = useQueryClient();
 
-   function handleChangeImage(e){
-    setimagePreview(URL.createObjectURL(e.target.files[0])) ;
- }
-   function handleClearImage(){
-    setimagePreview(null) ;
-    imgRef.current.value ='' ;
+  function handleChangeImage(e) {
+    setimagePreview(URL.createObjectURL(e.target.files[0]));
+  }
+  function handleClearImage() {
+    setimagePreview(null);
+    imgRef.current.value = "";
+  }
 
- }
-  
   function handleAddComment() {
     const content = new FormData();
     if (textareaRef.current.value.trim()) {
       content.append("content", textareaRef.current.value.trim());
     }
-    if(imgRef.current.value){
-      content.append("image" ,imgRef.current.files[0] )
+    if (imgRef.current.value) {
+      content.append("image", imgRef.current.files[0]);
     }
-    
+
     return axios.post(
       `https://route-posts.routemisr.com/posts/${postId}/comments`,
       content,
       {
-       headers: {
-        AUTHORIZATION: `Bearer ${localStorage.getItem("postGramTkn")}`,
+        headers: {
+          AUTHORIZATION: `Bearer ${localStorage.getItem("postGramTkn")}`,
+        },
       },
-      }
     );
   }
 
@@ -51,11 +51,10 @@ export default function CommentCreation({ postId, queryKey }) {
       queryClientObj.invalidateQueries({ queryKey: queryKey });
       setCommentValue("");
       setIsFocused(false);
-       handleClearImage() ;
+      handleClearImage();
       if (textareaRef.current) {
         textareaRef.current.style.height = "auto";
       }
-     
     },
     onError: (error) => {
       console.log(error);
@@ -94,35 +93,49 @@ export default function CommentCreation({ postId, queryKey }) {
             <button
               onClick={mutate}
               disabled={isPending}
-              className="mt-2 text-blue-600 hover:bg-blue-50 p-2 rounded-full transition-colors cursor-pointer"
+              className="mt-2 text-blue-600 hover:bg-blue-50 p-2 rounded-full transition-colors flex cursor-pointer"
             >
-              <IoSend size={20} className={isPending ? "opacity-50" : ""} />
+              {isPending ? (
+                <MoonLoader
+                 color="#155DFC"
+                  loading
+                  size={16}
+                />
+              ) : (
+                <IoSend size={20} className={isPending ? "opacity-50" : ""} />
+              )}
             </button>
           )}
         </div>
 
         {/* دلوقتي الـ Image هيشتغل صح لأننا عملنا له Import */}
-        {
-          imagePreview &&
+        {imagePreview && (
           <div className="px-4 pb-2 relative">
-          <Image
-            alt="Comment preview"
-            src={imagePreview}
-            width={200}
-            className="rounded-lg shadow-sm relative z-1"
-          />
-          <IoMdCloseCircleOutline onClick={handleClearImage} size={24}  className="absolute bg-black p-1 rounded-full cursor-pointer text-white top-1.5 left-5 z-10"/>
-          
-        </div>
-        } 
-        
+            <Image
+              alt="Comment preview"
+              src={imagePreview}
+              width={200}
+              className="rounded-lg shadow-sm relative z-1"
+            />
+            <IoMdCloseCircleOutline
+              onClick={handleClearImage}
+              size={24}
+              className="absolute bg-black p-1 rounded-full cursor-pointer text-white top-1.5 left-5 z-10"
+            />
+          </div>
+        )}
 
         {isFocused && (
           <div className="flex items-center justify-between px-2 pb-2 mt-[-5px]">
             <div className="flex gap-2">
               <button className="text-gray-500 hover:text-green-600 hover:bg-gray-200 p-1.5 rounded-full transition-colors">
                 <label className="cursor-pointer">
-                  <input ref={imgRef} type="file" hidden onChange={handleChangeImage} />
+                  <input
+                    ref={imgRef}
+                    type="file"
+                    hidden
+                    onChange={handleChangeImage}
+                  />
                   <IoCameraOutline size={20} />
                 </label>
               </button>
