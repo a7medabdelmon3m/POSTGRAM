@@ -15,6 +15,13 @@ import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 
+  function convertDate(rawDate) {
+    const date = new Date(rawDate);
+    const options = { day: "2-digit", month: "short", year: "numeric" };
+    const formattedDate = date.toLocaleDateString("en-GB", options);
+    return formattedDate;
+  }
+
 export default function CardHeader({
   user,
   date,
@@ -47,6 +54,8 @@ export default function CardHeader({
                     timeout:'1500'
                   })
                   obj.invalidateQueries({queryKey:["getComments"]})
+                  obj.invalidateQueries({queryKey:["getPosts"]})
+                  obj.invalidateQueries({queryKey:["getPostById",postID]})
     },
     onError:()=>{
       addToast({
@@ -58,12 +67,6 @@ export default function CardHeader({
     }
   })
 
-  function convertDate(rawDate) {
-    const date = new Date(rawDate);
-    const options = { day: "2-digit", month: "short", year: "numeric" };
-    const formattedDate = date.toLocaleDateString("en-GB", options);
-    return formattedDate;
-  }
   //   console.log(user);
 
   return cat === "comment" ? (
