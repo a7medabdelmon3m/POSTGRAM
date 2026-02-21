@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { AiFillHeart } from "react-icons/ai";
 import { BiSolidLike, BiLike } from "react-icons/bi";
 import { FaRegCommentAlt, FaShare } from "react-icons/fa";
@@ -12,14 +12,17 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import NoComments from "../noComments/NoComments";
 import { SyncLoader } from "react-spinners";
+import { authContext } from "../../useContext/authContext";
+import { div } from "framer-motion/client";
 
 const Post = ({ post, isPostDetails }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false); // غيرت الاسم ليكون أوضح
-
+  const {userData} = useContext(authContext) ;
   function toggleSettings() {
     setIsSettingsOpen(!isSettingsOpen);
   }
+
 
   // Destructuring Data
   const { body, image, user, createdAt, topComment, _id } = post;
@@ -52,7 +55,7 @@ const Post = ({ post, isPostDetails }) => {
       {/* 1. Header Section */}
       <div className="flex items-center justify-between px-4 py-3 relative bg-[#F0F2F5] ">
         <CardHeader user={user} date={createdAt} cat={"post"} />
-        <PostSettings user={user} isMyPost={false} />
+        <PostSettings user={user} isMyPost={false} userData = {userData} postId ={_id} />
       </div>
 
       {/* 2. Post Body */}
@@ -163,10 +166,13 @@ const Post = ({ post, isPostDetails }) => {
         <div className="flex flex-col gap-2">
           {isPostDetails ? (
             isLoading ? (
-              <SyncLoader color="#F7BF2D" size={10} />
+              <div className="m-auto">
+                <SyncLoader color="#F7BF2D" size={10} />
+              </div>
+              
             ) : comments.length > 0 ? (
               comments.map((comment) => (
-                <Comment key={comment._id} commentDetails={comment} />
+                <Comment key={comment._id} commentDetails={comment}  />
               ))
             ) : (
               <NoComments />
