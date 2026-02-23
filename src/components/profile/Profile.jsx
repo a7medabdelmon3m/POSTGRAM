@@ -15,7 +15,7 @@ export default function Profile() {
       headers: { AUTHORIZATION: `Bearer ${localStorage.getItem("postGramTkn")}`},
     })
   }
-  const{data ,isFetched,isLoading,isError,refetch} = useQuery({
+  const{data ,isLoading,isError,refetch} = useQuery({
     queryFn:handleGetProfile,
     queryKey:['getProfile'],
     enabled:!!localStorage.getItem("postGramTkn") ,
@@ -27,7 +27,7 @@ export default function Profile() {
   if(isError){
     return (
           <div className=" min-h-screen flex  items-center justify-center">
-            <div className=" flex flex-col items-center justify-center py-12 px-4 text-center max-w-[470px] mx-auto bg-white border border-gray-200 rounded-lg shadow-sm">
+            <div className=" flex flex-col items-center justify-center py-12 px-4 text-center max-w-117.5 mx-auto bg-white border border-gray-200 rounded-lg shadow-sm">
               <div className="bg-red-50 p-4 rounded-full mb-4">
                 <BiErrorCircle size={50} className="text-red-500" />
               </div>
@@ -64,14 +64,11 @@ export default function Profile() {
       
     <div className="w-full max-w-3xl bg-white rounded-4xl shadow-xl border border-gray-100 overflow-hidden">
         
-  {/* الـ Cover Photo */}
   <div className="h-48 md:h-56 bg-linear-to-r from-blue-600 via-indigo-500 to-purple-600 relative">
   </div>
 
-  {/* محتوى البروفايل */}
   <div className="px-6 md:px-10 pb-10 relative">
     
-    {/* الـ Avatar - مع أيقونة التعديل */}
     <div className="absolute -top-16 left-6 md:left-10 z-10">
       <div className="relative p-1.5 bg-white rounded-full shadow-md inline-block">
         <Avatar
@@ -81,7 +78,6 @@ export default function Profile() {
           src={profileData.user.photo}
         />
         
-        {/* زرار تغيير الصورة المدمج */}
        <UploadProfileImage/>
       </div>
     </div>

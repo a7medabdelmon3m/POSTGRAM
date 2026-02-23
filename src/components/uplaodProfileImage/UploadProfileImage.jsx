@@ -9,18 +9,16 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@heroui/react";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { FaCamera } from "react-icons/fa6";
 import elwan from '../../assets/images/elwan.png'
 import { useRef } from "react";
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { authContext } from "../../useContext/authContext";
 
 export default function UploadProfileImage() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [imagePreview, setimagePreview] = useState(null);
-  const {setUserPhoto , userPhoto} = useContext(authContext)
 const queryObj = useQueryClient() ;
   const imgVal =  useRef(null) ; 
     // console.log('userPhoto', userPhoto);

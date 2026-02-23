@@ -21,7 +21,7 @@ export default function MyNavbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const navigate = useNavigate();
-  const { userToken, clearAuthContextToken , setUserPhoto  } = useContext(authContext);
+  const { userToken, clearAuthContextToken  } = useContext(authContext);
   const isUserLogin = !!userToken;
   
   function handleGetProfile(){
@@ -166,7 +166,7 @@ export default function MyNavbar() {
 
       {/* Mobile Menu*/}
       <div
-        className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden bg-white border-t border-gray-100 ${isOpen ? "max-h-[500px] opacity-100 shadow-lg" : "max-h-0 opacity-0"}`}
+        className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden bg-white border-t border-gray-100 ${isOpen ? "max-h-125 opacity-100 shadow-lg" : "max-h-0 opacity-0"}`}
       >
         <div className="px-4 pt-4 pb-6 space-y-4">
           {isUserLogin && (

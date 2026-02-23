@@ -1,5 +1,4 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
 import Post from "../postCard/Post";
 import { FaLessThan } from "react-icons/fa6";
 import Loading from "../loading/Loading";
@@ -13,7 +12,7 @@ export default function Home() {
   // const [isLoading, setisLoading] = useState(true);
   // const [isError, setIsError] = useState(false);
   // function getAllPosts() {
-  //   setIsError(false); 
+  //   setIsError(false);
   //   setisLoading(true);
   //   axios
   //     .get("https://linked-posts.routemisr.com/posts?sort=-createdAt", {
@@ -35,32 +34,35 @@ export default function Home() {
   // useEffect(function () {
   //   getAllPosts();
   // }, []);
-  function getAllPosts(){
-    return axios
-      .get("https://route-posts.routemisr.com/posts?sort=-createdAt", {
-        headers: { AUTHORIZATION: `Bearer ${localStorage.getItem("postGramTkn")}`},
-      })
+  function getAllPosts() {
+    return axios.get(
+      "https://route-posts.routemisr.com/posts?sort=-createdAt",
+      {
+        headers: {
+          AUTHORIZATION: `Bearer ${localStorage.getItem("postGramTkn")}`,
+        },
+      },
+    );
   }
-  const {data , isLoading, isError , isFetching , refetch} =  useQuery({
-    queryKey:['getPosts'],
-    queryFn:getAllPosts,
+  const { data, isLoading, isError /*, isFetching , refetch*/ } = useQuery({
+    queryKey: ["getPosts"],
+    queryFn: getAllPosts,
     // refetchOnMount:false,
     // refetchInterval:3000 * 60,
     // retry:5,
     // retryDelay:2000,
     // staleTime:5000,
     // gcTime:3000,
-    enabled:!!localStorage.getItem("postGramTkn") ,
+    enabled: !!localStorage.getItem("postGramTkn"),
   });
-  
-  
+
   if (isLoading) {
     return <Loading />;
   }
   if (isError) {
     return (
       <div className=" min-h-screen flex  items-center justify-center">
-        <div className=" flex flex-col items-center justify-center py-12 px-4 text-center max-w-[470px] mx-auto bg-white border border-gray-200 rounded-lg shadow-sm">
+        <div className=" flex flex-col items-center justify-center py-12 px-4 text-center max-w-117.5 mx-auto bg-white border border-gray-200 rounded-lg shadow-sm">
           <div className="bg-red-50 p-4 rounded-full mb-4">
             <BiErrorCircle size={50} className="text-red-500" />
           </div>
@@ -84,19 +86,22 @@ export default function Home() {
       </div>
     );
   }
-  const allPosts = data?.data?.data?.posts ;
-// console.log(data.data.data.posts);
+  const allPosts = data?.data?.data?.posts;
+  // console.log(data.data.data.posts);
 
   return (
-   
     <div className="container mx-auto py-8">
-       <Helmet>
+      <Helmet>
         <title> postgram</title>
-       
-       </Helmet>
-      <PostCreation/>
+      </Helmet>
+      <PostCreation />
       {allPosts?.map((post) => (
-        <Post key={post._id} post={post} isPostDetails={false} queryKey ={['getPosts']} />
+        <Post
+          key={post._id}
+          post={post}
+          isPostDetails={false}
+          queryKey={["getPosts"]}
+        />
       ))}
     </div>
   );

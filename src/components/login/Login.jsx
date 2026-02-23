@@ -67,17 +67,17 @@ export default function Login() {
   //   console.log(val);
 
   //  }
-  const { setUser, userToken, setAuthContextToken  , setUserPhoto } = useContext(authContext);
+  const { /*setUser, userToken,*/ setAuthContextToken   } = useContext(authContext);
   const navigate = useNavigate();
   const [showLoading, setShowLoading] = useState(false);
   const {
     handleSubmit,
     register,
     formState,
-    setError,
-    getValues,
-    trigger,
-    watch,
+    // setError,
+    // getValues,
+    // trigger,
+    // watch,
   } = useForm({
     defaultValues: {
       email: "",

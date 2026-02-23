@@ -30,7 +30,7 @@ export default function PostSettings({ user, userData , postId }) {
     })
   }
   const obj = useQueryClient()
-  const {isPending , mutate:deletePost} = useMutation({
+  const { mutate:deletePost} = useMutation({
     mutationFn:handleDeletePost,
     onSuccess:() =>{
        addToast({
