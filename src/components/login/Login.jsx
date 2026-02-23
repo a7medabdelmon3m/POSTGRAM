@@ -101,7 +101,6 @@ export default function Login() {
       })
       .then(function (resp) {
         setAuthContextToken(resp.data.data.token);
-        setUserPhoto(resp.data.data.user.photo) ; 
         localStorage.setItem("postGramTkn", resp.data.data.token);
         localStorage.setItem("userData", JSON.stringify(resp.data.data.user));
         confirmationEvent("Welcome Back 🥰", "#5CB85D");

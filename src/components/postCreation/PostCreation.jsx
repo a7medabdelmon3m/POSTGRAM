@@ -103,6 +103,7 @@ export default function PostCreation() {
   const { data:userPhoto } = useQuery({
     queryFn:handleGetProfile,
     queryKey: ['getProfile'], 
+    enabled: !!localStorage.getItem("postGramTkn"),
   });
 //  console.log( 'userphoto',userPhoto.data.data.user.photo);
  

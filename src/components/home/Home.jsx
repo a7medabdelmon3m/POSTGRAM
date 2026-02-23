@@ -84,7 +84,7 @@ export default function Home() {
       </div>
     );
   }
-  const allPosts = data.data.data.posts ;
+  const allPosts = data?.data?.data?.posts ;
 // console.log(data.data.data.posts);
 
   return (

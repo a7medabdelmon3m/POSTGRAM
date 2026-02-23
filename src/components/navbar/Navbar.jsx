@@ -29,7 +29,7 @@ export default function MyNavbar() {
       headers: { AUTHORIZATION: `Bearer ${localStorage.getItem("postGramTkn")}`},
     })
   }
-  const{data ,isLoading, isSuccess } = useQuery({
+  const{data ,isLoading,  } = useQuery({
     queryFn:handleGetProfile,
     queryKey:['getProfile'],
     enabled:!!localStorage.getItem("postGramTkn") ,
