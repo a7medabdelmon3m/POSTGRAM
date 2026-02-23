@@ -11,16 +11,30 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 // صورة البروفايل
-import userImg from "../../assets/images/elwan.png"; // تأكد إن الصورة موجودة
+import elwan from "../../assets/images/elwan.png"; // تأكد إن الصورة موجودة
 import { authContext } from "../../useContext/authContext";
+import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@heroui/react";
+import axios from "axios";
 
 export default function MyNavbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const navigate = useNavigate();
-  const { userToken, clearAuthContextToken } = useContext(authContext);
+  const { userToken, clearAuthContextToken , setUserPhoto  } = useContext(authContext);
   const isUserLogin = !!userToken;
-
+  
+  function handleGetProfile(){
+    return axios.get('https://route-posts.routemisr.com/users/profile-data',{
+      headers: { AUTHORIZATION: `Bearer ${localStorage.getItem("postGramTkn")}`},
+    })
+  }
+  const{data ,isLoading, isSuccess } = useQuery({
+    queryFn:handleGetProfile,
+    queryKey:['getProfile'],
+    enabled:!!localStorage.getItem("postGramTkn") ,
+  })
+  
   // دالة الستايل للروابط (Active vs Inactive)
   const getLinkClasses = ({ isActive }) =>
     `flex items-center gap-2 font-medium transition-all duration-300 hover:text-[#00644E] relative group text-sm ${
@@ -51,7 +65,7 @@ export default function MyNavbar() {
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             {/* Search Input */}
-            {isUserLogin && (
+            {isUserLogin && ( 
               <div className="relative group">
                 <input
                   type="text"
@@ -102,12 +116,17 @@ export default function MyNavbar() {
                     }
                     className="flex items-center focus:outline-none group"
                   >
-                    <div className="w-9 h-9 rounded-full border border-[#F7BF2D] p-0.5 group-hover:border-[#00644E] transition-all duration-300">
+                    <div className="w-9 overflow-hidden h-9 rounded-full border border-[#F7BF2D] p-0.5 group-hover:border-[#00644E] transition-all duration-300">
+                      {isLoading ?
+                      <Skeleton className="flex rounded-full w-10 h-10" />
+                      :
                       <img
-                        src={userImg}
+                        src={data?.data?.data.user.photo || elwan} 
                         alt="User Profile"
                         className="w-full h-full rounded-full object-cover"
                       />
+                    }
+                      
                     </div>
                   </button>
 

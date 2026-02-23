@@ -6,6 +6,7 @@ import Loading from "../loading/Loading";
 import { BiErrorCircle } from "react-icons/bi";
 import { useQuery } from "@tanstack/react-query";
 import PostCreation from "../postCreation/PostCreation";
+import { Helmet } from "react-helmet";
 
 export default function Home() {
   // const [allPosts, setAllPosts] = useState(null);
@@ -87,7 +88,12 @@ export default function Home() {
 // console.log(data.data.data.posts);
 
   return (
+   
     <div className="container mx-auto py-8">
+       <Helmet>
+        <title> postgram</title>
+       
+       </Helmet>
       <PostCreation/>
       {allPosts?.map((post) => (
         <Post key={post._id} post={post} isPostDetails={false} queryKey ={['getPosts']} />

@@ -20,8 +20,7 @@ import { IoMdCloseCircleOutline } from "react-icons/io";
 import { CiImageOn } from "react-icons/ci";
 import { BiPointer } from "react-icons/bi";
 import axios from "axios";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { button } from "framer-motion/client";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { authContext } from "../../useContext/authContext";
 import { PulseLoader } from "react-spinners";
 // import { body } from "framer-motion/client";
@@ -29,7 +28,7 @@ import { PulseLoader } from "react-spinners";
 export default function PostCreation() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [imagePreview, setimagePreview] = useState(null);
-  const [postConrent, setpostConrent] = useState("");
+  const [postContent, setpostContent] = useState("");
   const imageEle = useRef(null);
   //   const capEle = useRef(null) ;
   const queryClientObj = useQueryClient();
@@ -48,8 +47,8 @@ export default function PostCreation() {
   function handlePostCreation() {
     const content = new FormData();
 
-    if (postConrent) {
-      content.append("body", postConrent);
+    if (postContent) {
+      content.append("body", postContent);
     } else if (imageEle.current.value) {
       content.append("body", " ");
     }
@@ -65,17 +64,17 @@ export default function PostCreation() {
   }
   const {mutate, isPending } = useMutation({
     mutationFn: handlePostCreation,
-    onError: (resp) => {
+    onError: (error) => {
         addToast({
               title: "opps!",
-              description:resp.data.message,
+              description:error.response.data.message,
               color: 'danger',
               timeout:'1500'
             })
     },
     onSuccess: (resp) => {
       handleClearImage();
-      setpostConrent("");
+      setpostContent("");
       onOpenChange(false);
       queryClientObj.invalidateQueries({ queryKey: ["getPosts"] });
       console.log(resp.data.message);
@@ -91,10 +90,21 @@ export default function PostCreation() {
   });
   function handleCloseModal() {
     handleClearImage();
-    setpostConrent("");
+    setpostContent("");
     onOpenChange(false);
   }
-  const {user} =  useContext(authContext)
+  const {user } =  useContext(authContext)
+
+  function handleGetProfile(){
+    return axios.get('https://route-posts.routemisr.com/users/profile-data',{
+      headers: { AUTHORIZATION: `Bearer ${localStorage.getItem("postGramTkn")}`},
+    })
+  }
+  const { data:userPhoto } = useQuery({
+    queryFn:handleGetProfile,
+    queryKey: ['getProfile'], 
+  });
+//  console.log( 'userphoto',userPhoto.data.data.user.photo);
  
   return (
     
@@ -106,7 +116,7 @@ export default function PostCreation() {
               className="w-10 h-10 bg-red-500"
               isBordered
               color="warning"
-              src={user?.photo}
+              src={userPhoto?.data?.data?.user?.photo}
             />
 
             <div
@@ -131,7 +141,7 @@ export default function PostCreation() {
               {() => (
                 <>
                   <ModalHeader className="flex flex-col gap-4 items-center">
-                    Craete post
+                    Create post
                     <Card className="self-stretch">
                       <CardHeader className="justify-between">
                         <div className="flex gap-5">
@@ -140,7 +150,7 @@ export default function PostCreation() {
                             radius="full"
                             color="warning"
                             size="md"
-                            src={user?.photo}
+                            src={userPhoto?.data?.data?.user?.photo}
                           />
                           <div className="flex flex-col gap-1 items-start justify-center">
                             <h4 className="text-small font-semibold leading-none text-default-600">
@@ -157,9 +167,9 @@ export default function PostCreation() {
                   <ModalBody className="flex flex-col gap-4 ">
                     <Textarea
                       //    ref={capEle}
-                      value={postConrent}
+                      value={postContent}
                       onChange={(e) => {
-                        setpostConrent(e.target.value);
+                        setpostContent(e.target.value);
                       }}
                       className="w-full"
                       placeholder={`What are you thinking ${user?.name}?`}
@@ -201,11 +211,11 @@ export default function PostCreation() {
                       Close
                     </Button>
                     <Button
-                      className={`font-semibold ${isPending || (!postConrent.trim() && !imagePreview && `cursor-not-allowed opacity-50`)}  `}
+                      className={`font-semibold ${isPending || (!postContent.trim() && !imagePreview && `cursor-not-allowed opacity-50`)}  `}
                       color="success"
                       onPress={mutate}
-                      disabled={
-                        isPending || (!postConrent.trim() && !imagePreview)
+                      isDisabled={
+                        isPending || (!postContent.trim() && !imagePreview)
                       }
 
                     >

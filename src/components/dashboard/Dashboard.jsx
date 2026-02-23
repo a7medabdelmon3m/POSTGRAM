@@ -1,7 +1,12 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 
 export default function Dashboard() {
   return (
-    <div>Dashboard</div>
+    <div>
+      <Helmet>
+        <title>dashboard</title>
+       </Helmet>
+      Dashboard</div>
   )
 }

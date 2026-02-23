@@ -29,7 +29,6 @@ export default function AuthContextProvider({children}) {
       function decodeUserTkn(){
             const decodedTkn = jwtDecode(userToken) ;
             setuserData(decodedTkn); 
-            console.log(decodedTkn); 
         }
     useEffect(()=>{
       
@@ -40,7 +39,7 @@ export default function AuthContextProvider({children}) {
     
     
   return (
-    <authContext.Provider value={{userToken , setAuthContextToken , clearAuthContextToken , user , setUser , userData}}>
+    <authContext.Provider value={{userToken , setAuthContextToken , clearAuthContextToken , user , setUser , userData  }}>
         {children}
     </authContext.Provider>
     

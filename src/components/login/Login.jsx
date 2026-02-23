@@ -67,7 +67,7 @@ export default function Login() {
   //   console.log(val);
 
   //  }
-  const { setUser, userToken, setAuthContextToken } = useContext(authContext);
+  const { setUser, userToken, setAuthContextToken  , setUserPhoto } = useContext(authContext);
   const navigate = useNavigate();
   const [showLoading, setShowLoading] = useState(false);
   const {
@@ -101,6 +101,7 @@ export default function Login() {
       })
       .then(function (resp) {
         setAuthContextToken(resp.data.data.token);
+        setUserPhoto(resp.data.data.user.photo) ; 
         localStorage.setItem("postGramTkn", resp.data.data.token);
         localStorage.setItem("userData", JSON.stringify(resp.data.data.user));
         confirmationEvent("Welcome Back 🥰", "#5CB85D");
