@@ -9,7 +9,7 @@ import { IoMdCloseCircleOutline } from "react-icons/io";
 import { FadeLoader, MoonLoader } from "react-spinners";
 // import { url } from "zod/v4-mini";
 
-export default function CommentCreation({ postId, queryKey }) {
+export default function CommentCreation({ postId, queryKey , isUpdating = false, UpdatedCommentData = '' }) {
   const [commentValue, setCommentValue] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [imagePreview, setimagePreview] = useState(null);
@@ -79,6 +79,7 @@ export default function CommentCreation({ postId, queryKey }) {
       >
         <div className="flex items-start p-2">
           <textarea
+          
             ref={textareaRef}
             value={commentValue}
             onChange={handleInput}
@@ -86,7 +87,7 @@ export default function CommentCreation({ postId, queryKey }) {
             placeholder="Write a comment..."
             rows={1}
             disabled={isPending}
-            className="w-full bg-transparent border-none outline-none resize-none text-[15px] text-gray-800 placeholder-gray-500 min-h-[36px] max-h-[120px] overflow-y-auto py-2 px-2 dir-auto"
+            className="w-full  bg-transparent border-none outline-none resize-none text-[15px] text-gray-800 placeholder-gray-500 min-h-[36px] max-h-[120px] overflow-y-auto py-2 px-2 dir-auto"
           />
 
           {commentValue.trim().length > 0 && (

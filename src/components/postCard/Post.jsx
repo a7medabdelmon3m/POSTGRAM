@@ -13,19 +13,20 @@ import { useQuery } from "@tanstack/react-query";
 import NoComments from "../noComments/NoComments";
 import { SyncLoader } from "react-spinners";
 import { authContext } from "../../useContext/authContext";
-import { div } from "framer-motion/client";
 
 const Post = ({ post, isPostDetails }) => {
   const [isLiked, setIsLiked] = useState(false);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false); // غيرت الاسم ليكون أوضح
   const {userData} = useContext(authContext) ;
-  function toggleSettings() {
-    setIsSettingsOpen(!isSettingsOpen);
-  }
+  const [commentToEdit, setcommentToEdit] = useState(null)
+  // function toggleSettings() {
+  //   setIsSettingsOpen(!isSettingsOpen);
+  // }
 
 
   // Destructuring Data
   const { body, image, user, createdAt, topComment, _id } = post;
+// console.log('post content from postSetting' , body , image);
+
 
   // Static Numbers
   const likesCount = post.likesCount;
@@ -43,7 +44,7 @@ const Post = ({ post, isPostDetails }) => {
       },
     );
   }
-  const { data, isError, isSuccess, isLoading, isFetched } = useQuery({
+  const { data, /*isError, isSuccess,*/ isLoading, /*isFetched*/ } = useQuery({
     queryKey: ["getComments", _id],
     queryFn: handleGetPostComments,
     enabled: !!localStorage.getItem("postGramTkn"),
@@ -55,7 +56,7 @@ const Post = ({ post, isPostDetails }) => {
       {/* 1. Header Section */}
       <div className="flex items-center justify-between px-4 py-3 relative bg-[#F0F2F5] ">
         <CardHeader user={user} date={createdAt} cat={"post"} />
-        <PostSettings user={user} isMyPost={false} userData = {userData} postId ={_id} />
+        <PostSettings user={user} isMyPost={false} userData = {userData} postId ={_id} postContent ={{body , image}} />
       </div>
 
       {/* 2. Post Body */}

@@ -33,7 +33,7 @@ export default function PostCreation() {
   //   const capEle = useRef(null) ;
   const queryClientObj = useQueryClient();
 
-  //   console.log(imageEle);
+    // console.log(imageEle);
 
   function handleChangeImage(e) {
     // console.log('changed' ,  );

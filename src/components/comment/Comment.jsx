@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import CardHeader from "../cardHeader/CardHeader";
 import { BsThreeDots } from "react-icons/bs";
+import CommentEdition from "../commentEdition/CommentEdition";
 
 export default function Comment({ commentDetails }) {
   const [isLiked, setIsLiked] = useState(false);
@@ -40,6 +41,7 @@ export default function Comment({ commentDetails }) {
           1h
         </span>
       </div>
+      
     </div>
   );
 }
