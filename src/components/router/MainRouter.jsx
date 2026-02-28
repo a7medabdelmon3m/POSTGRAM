@@ -10,6 +10,7 @@ import Dashboard from "../dashboard/Dashboard";
 import AntiProtectedRouter from "../antiProtectedRouter/AntiProtectedRouter";
 import ProtectedRouter from "../protectedRouter/ProtectedRouter";
 import PostDetails from "../postDetails/PostDetails";
+import Setting from "../setting/Setting";
 
 const routes = createBrowserRouter([
   {
@@ -45,6 +46,14 @@ const routes = createBrowserRouter([
         element: (
           <ProtectedRouter>
             <Profile />
+          </ProtectedRouter>
+        ),
+      },
+      {
+        path: "setting",
+        element: (
+          <ProtectedRouter>
+            <Setting />
           </ProtectedRouter>
         ),
       },

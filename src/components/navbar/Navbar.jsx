@@ -16,6 +16,7 @@ import { authContext } from "../../useContext/authContext";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@heroui/react";
 import axios from "axios";
+import { FaGear } from "react-icons/fa6";
 
 export default function MyNavbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -139,6 +140,12 @@ export default function MyNavbar() {
                       >
                         <FaUser className="text-gray-400" /> Profile
                       </Link>
+                      <Link
+                        to="/Setting"
+                        className="flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-gray-50 hover:text-[#00644E] transition-colors text-sm font-medium"
+                      >
+                        <FaGear className="text-gray-400" /> Setting
+                      </Link>
                       <button
                         onClick={handleLogOut}
                         className="w-full flex items-center gap-3 px-4 py-2.5 text-gray-700 hover:bg-red-50 hover:text-red-500 transition-colors text-sm font-medium border-t border-gray-50 mt-1"
@@ -205,6 +212,12 @@ export default function MyNavbar() {
                 className="flex items-center gap-3 text-gray-700 hover:text-[#00644E] hover:bg-gray-50 px-2 py-2 rounded-lg font-medium"
               >
                 <FaUser size={14} /> My Profile
+              </Link>
+              <Link
+                to="/Setting"
+                className="flex items-center gap-3 text-gray-700 hover:text-[#00644E] hover:bg-gray-50 px-2 py-2 rounded-lg font-medium"
+              >
+                <FaGear size={14} /> Setting
               </Link>
               <button
                 onClick={handleLogOut}

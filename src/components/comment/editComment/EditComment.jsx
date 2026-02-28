@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import elwan from "../../../assets/images/elwan.png";
 import { addToast, Button, Image } from "@heroui/react";
-import { IoCameraOutline, IoSend } from "react-icons/io5";
+import { IoCameraOutline, IoSend, IoWarningOutline } from "react-icons/io5";
 import { BsEmojiSmile } from "react-icons/bs";
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -13,6 +13,8 @@ export default function EditComment({ commentDetails, onCancel }) {
   const [isFocused, setIsFocused] = useState(false);
   const [commentValue, setCommentValue] = useState(content || "");
   const [commentImage, setCommentImage] = useState(image || null);
+  // const [thereIsImg, setthereIsImg] = useState(image || null);
+  const thereIsImg = image || null ;
   // const [imgIsDeleted, setimgIsDeleted] = useState(false);
   const textareaRef = useRef();
   const imgRef = useRef();
@@ -91,7 +93,7 @@ console.log(_id);
       handleClearComment();
     },
     onError: (err) => {
-      console.log('msg' ,  err);
+      // console.log('msg' ,  err);
       
       addToast({
         title: "Sorry!",
@@ -164,6 +166,17 @@ console.log(_id);
                   />
                 </div>
               )}
+              {(!commentImage && thereIsImg)&&
+                <div className="flex items-center gap-2.5 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 w-fit max-w-[250px]">
+                    <IoWarningOutline size={22} className="shrink-0 text-red-500" />
+                    <div className="flex flex-col gap-0.5">
+                      <span className="font-semibold text-[13px]">Image cannot be removed</span>
+                      <span className="text-[11px] leading-relaxed">
+                        The API does not support empty image updates. You must keep the current image or upload a new one.
+                      </span>
+                    </div>
+                  </div>
+              }
             </div>
 
             {(isFocused || commentValue.trim().length > 0) && (
