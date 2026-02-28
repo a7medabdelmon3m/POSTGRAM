@@ -30,7 +30,8 @@ export default function CardHeader({
   cat,
   commentCreatorId,
   commentId,
-  postID
+  postID,
+  handleSetIsEdit
 }) {
   const {userData}= useContext(authContext) ;
   // console.log(userData.user)
@@ -72,7 +73,7 @@ export default function CardHeader({
   return cat === "comment" ? (
     <div className="flex  items-start space-x-3">
       {}
-      <img
+     <img
         src={photo}
         alt={name}
         className="w-10 h-10 rounded-full object-cover border-2 border-[#589FC7] p-px cursor-pointer" // برواز أزرق للصورة
@@ -109,14 +110,14 @@ export default function CardHeader({
         </DropdownTrigger>
         {(userData.user === commentCreatorId) &&
           <DropdownMenu aria-label="Static Actions">
-          <DropdownItem key="edit" textValue="edit" className="text-secondary"  >Edit </DropdownItem>
+          <DropdownItem onClick={handleSetIsEdit} key="edit" textValue="edit" className="text-secondary"  >Edit </DropdownItem>
           <DropdownItem onClick={deleteComment} key="delete" textValue="delete" className="text-danger">
             Delete 
           </DropdownItem>
         </DropdownMenu>
         }
         {(userData.user !== commentCreatorId) &&
-          <DropdownMenu aria-label="Static Actions">
+          <DropdownMenu DropdownMenu aria-label="Static Actions">
           <DropdownItem key="hide" textValue="hide" className="text-secondary"  >Hide</DropdownItem>
           <DropdownItem key="report" textValue="report" className="text-danger">
             Report

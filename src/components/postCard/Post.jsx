@@ -17,7 +17,7 @@ import { authContext } from "../../useContext/authContext";
 const Post = ({ post, isPostDetails }) => {
   const [isLiked, setIsLiked] = useState(false);
   const {userData} = useContext(authContext) ;
-  const [commentToEdit, setcommentToEdit] = useState(null)
+  // const [commentToEdit, setcommentToEdit] = useState(null)
   // function toggleSettings() {
   //   setIsSettingsOpen(!isSettingsOpen);
   // }

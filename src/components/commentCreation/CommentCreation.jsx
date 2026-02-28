@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-// ضفنا Image هنا في الـ import
 import { Image } from "@heroui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -7,7 +6,6 @@ import { IoCameraOutline, IoSend } from "react-icons/io5";
 import { BsEmojiSmile } from "react-icons/bs";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { FadeLoader, MoonLoader } from "react-spinners";
-// import { url } from "zod/v4-mini";
 
 export default function CommentCreation({ postId, queryKey , isUpdating = false, UpdatedCommentData = '' }) {
   const [commentValue, setCommentValue] = useState("");
@@ -47,8 +45,8 @@ export default function CommentCreation({ postId, queryKey , isUpdating = false,
 
   const { mutate, isPending } = useMutation({
     mutationFn: handleAddComment,
-    onSuccess: () => {
-      queryClientObj.invalidateQueries({ queryKey: queryKey });
+    onSuccess: async () => {
+      await queryClientObj.invalidateQueries({ queryKey: queryKey });
       setCommentValue("");
       setIsFocused(false);
       handleClearImage();

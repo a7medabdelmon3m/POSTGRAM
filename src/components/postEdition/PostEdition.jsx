@@ -12,7 +12,7 @@ import {
   ModalHeader,
   Textarea,
 } from "@heroui/react";
-import React, {  useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import CardHeader from "../cardHeader/CardHeader";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { CiImageOn } from "react-icons/ci";
@@ -68,9 +68,9 @@ export default function PostEdition({ isOpen, onOpenChange, postContent ,postId 
   }
   const {isPending ,mutate} = useMutation({
     mutationFn:HandleUpdatePost,
-    onSuccess:(resp) =>{
+    onSuccess:async (resp) =>{
       handelClearModal();
-      queryObj.invalidateQueries({queryKey :["getPosts"]})
+      await queryObj.invalidateQueries({queryKey :["getPosts"]})
       addToast({
               title: "congratulations",
               description:resp.data.message,
@@ -80,9 +80,9 @@ export default function PostEdition({ isOpen, onOpenChange, postContent ,postId 
     },
     onError:(resp) =>{
        addToast({
-              title: "congratulations",
+              title: "Sorry!",
               description:resp.data.message,
-              color: 'success',
+              color: 'danger',
               timeout:'1500'
             })
     },
