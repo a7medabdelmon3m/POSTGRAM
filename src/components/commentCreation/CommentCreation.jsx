@@ -45,8 +45,8 @@ export default function CommentCreation({ postId, queryKey , isUpdating = false,
 
   const { mutate, isPending } = useMutation({
     mutationFn: handleAddComment,
-    onSuccess: async () => {
-      await queryClientObj.invalidateQueries({ queryKey: queryKey });
+    onSuccess:  () => {
+       queryClientObj.invalidateQueries({ queryKey: queryKey });
       setCommentValue("");
       setIsFocused(false);
       handleClearImage();

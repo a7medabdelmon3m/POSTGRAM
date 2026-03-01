@@ -7,8 +7,15 @@ import Loading from "../loading/Loading";
 import { BiErrorCircle } from "react-icons/bi";
 import UploadProfileImage from "../uplaodProfileImage/UploadProfileImage";
 import { Avatar } from "@heroui/react";
+import Post from "../postCard/Post";
+import useProfilePosts from "./getMyPosts/useProfilePosts";
+import { useContext } from "react";
+import { authContext } from "../../useContext/authContext";
 
 export default function Profile() {
+
+  const {userData} = useContext(authContext)
+  const {allPosts } = useProfilePosts(userData?.user ) 
 
   function handleGetProfile(){
     return axios.get('https://route-posts.routemisr.com/users/profile-data',{
@@ -56,7 +63,7 @@ export default function Profile() {
   
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4 flex justify-center items-center font-sans">
+    <div className="min-h-screen  bg-gray-50 py-10 px-4 flex flex-col justify-center items-center font-sans">
       <Helmet>
         <title>Profile | {profileData.user.name}</title>
       </Helmet>
@@ -95,7 +102,6 @@ export default function Profile() {
       </h5>
     </div>
 
-    {/* قسم الإحصائيات (Stats) */}
     <div className="grid grid-cols-3 gap-2 md:gap-4 mt-8 py-6 border-y border-gray-100">
       <div className="flex flex-col items-center justify-center p-3 rounded-2xl hover:bg-slate-50 transition duration-300 cursor-pointer">
         <h2 className="text-2xl font-bold text-gray-900">{profileData.user.followersCount}</h2>
@@ -111,7 +117,6 @@ export default function Profile() {
       </div>
     </div>
 
-    {/* قسم About */}
     <div className="mt-8 bg-slate-50 rounded-3xl p-6 border border-slate-100 shadow-sm">
       <h2 className="text-lg font-bold text-gray-800 mb-4">About</h2>
       <div className="flex flex-col gap-3">
@@ -126,7 +131,6 @@ export default function Profile() {
       </div>
     </div>
 
-    {/* الكروت السفلية (Posts & Saved) */}
     <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-6">
       <div className="group rounded-3xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-between cursor-pointer">
         <div>
@@ -150,9 +154,19 @@ export default function Profile() {
     </div>
 
   </div>
-</div>
+    </div>
 
+   <div className="container max-w-3xl mx-auto py-8">
 
+    {allPosts?.map((post) => (
+        <Post
+          key={post._id}
+          post={post}
+          isPostDetails={false}
+          queryKey={["getPosts"]}
+        />
+      ))}
+   </div>
     </div>
   );
 }

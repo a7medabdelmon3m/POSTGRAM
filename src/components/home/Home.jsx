@@ -1,11 +1,12 @@
-import axios from "axios";
+// import axios from "axios";
 import Post from "../postCard/Post";
 import { FaLessThan } from "react-icons/fa6";
 import Loading from "../loading/Loading";
 import { BiErrorCircle } from "react-icons/bi";
-import { useQuery } from "@tanstack/react-query";
+// import { useQuery } from "@tanstack/react-query";
 import PostCreation from "../postCreation/PostCreation";
 import { Helmet } from "react-helmet";
+import useHome from "./useHome";
 
 export default function Home() {
   // const [allPosts, setAllPosts] = useState(null);
@@ -34,28 +35,8 @@ export default function Home() {
   // useEffect(function () {
   //   getAllPosts();
   // }, []);
-  function getAllPosts() {
-    return axios.get(
-      "https://route-posts.routemisr.com/posts?sort=-createdAt",
-      {
-        headers: {
-          AUTHORIZATION: `Bearer ${localStorage.getItem("postGramTkn")}`,
-        },
-      },
-    );
-  }
-  const { data, isLoading, isError /*, isFetching , refetch*/ } = useQuery({
-    queryKey: ["getPosts"],
-    queryFn: getAllPosts,
-    // refetchOnMount:false,
-    // refetchInterval:3000 * 60,
-    // retry:5,
-    // retryDelay:2000,
-    // staleTime:5000,
-    // gcTime:3000,
-    enabled: !!localStorage.getItem("postGramTkn"),
-  });
-
+ 
+ const {allPosts, isLoading , isError ,getAllPosts} = useHome()
   if (isLoading) {
     return <Loading />;
   }
@@ -86,7 +67,6 @@ export default function Home() {
       </div>
     );
   }
-  const allPosts = data?.data?.data?.posts;
   // console.log(data.data.data.posts);
 
   return (

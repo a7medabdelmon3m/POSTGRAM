@@ -20,6 +20,7 @@ import { FiEdit3, FiTrash2, FiShare2, FiAlertCircle } from "react-icons/fi";
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import PostEdition from "../postEdition/PostEdition";
+import Swal from "sweetalert2";
 
 export default function PostSettings({ user, userData, postId , postContent }) {
       const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -28,6 +29,21 @@ export default function PostSettings({ user, userData, postId , postContent }) {
   const iconClasses = "text-xl text-default-500 pointer-events-none shrink-0";
   // console.log( 'userData.user', userData.user )
   // console.log('user', user)
+  function showAlert(){
+    Swal.fire({
+  title: "Are you sure?",
+  text: "You won't be able to revert this!",
+  icon: "warning",
+  showCancelButton: true,
+  confirmButtonColor: "#3085d6",
+  cancelButtonColor: "#d33",
+  confirmButtonText: "Yes, delete it!"
+}).then((result) => {
+  if (result.isConfirmed) {
+    deletePost()
+  }
+});
+  }
   function handleDeletePost() {
     return axios.delete(`https://route-posts.routemisr.com/posts/${postId}`, {
       headers: {
@@ -109,7 +125,7 @@ export default function PostSettings({ user, userData, postId , postContent }) {
 
           {_id === userData.user && (
             <DropdownItem
-              onClick={deletePost}
+              onClick={showAlert}
               key="delete"
               textValue="delete"
               className="text-danger"

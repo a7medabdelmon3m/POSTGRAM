@@ -13,6 +13,7 @@ import { BsThreeDots } from "react-icons/bs";
 import { authContext } from "../../useContext/authContext";
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Swal from "sweetalert2";
 
 
   function convertDate(rawDate) {
@@ -21,6 +22,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
     const formattedDate = date.toLocaleDateString("en-GB", options);
     return formattedDate;
   }
+  
 
 export default function CardHeader({
   user,
@@ -37,12 +39,27 @@ export default function CardHeader({
   // console.log(userData.user)
   // console.log(commentId)
   const { name, photo } = user || {};
-
+function showAlert(){
+    Swal.fire({
+  title: "Are you sure?",
+  text: "You won't be able to revert this!",
+  icon: "warning",
+  showCancelButton: true,
+  confirmButtonColor: "#3085d6",
+  cancelButtonColor: "#d33",
+  confirmButtonText: "Yes, delete it!"
+}).then((result) => {
+  if (result.isConfirmed) {
+    deleteComment()
+  }
+});
+  }
   function handelDeleteComment(){
     return axios.delete(`https://route-posts.routemisr.com/posts/${postID}/comments/${commentId}` ,{
        headers: { AUTHORIZATION: `Bearer ${localStorage.getItem("postGramTkn")}`},
     })
   }
+
   const obj =  useQueryClient() ; 
 
   const {mutate:deleteComment} =  useMutation({
@@ -111,7 +128,7 @@ export default function CardHeader({
         {(userData.user === commentCreatorId) &&
           <DropdownMenu aria-label="Static Actions">
           <DropdownItem onClick={handleSetIsEdit} key="edit" textValue="edit" className="text-secondary"  >Edit </DropdownItem>
-          <DropdownItem onClick={deleteComment} key="delete" textValue="delete" className="text-danger">
+          <DropdownItem onClick={showAlert} key="delete" textValue="delete" className="text-danger">
             Delete 
           </DropdownItem>
         </DropdownMenu>

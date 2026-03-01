@@ -110,7 +110,7 @@ export default function PostCreation() {
   return (
     
     <div className="mb-6">
-      <div className="container  max-w-md mx-auto md:max-w-2xl">
+      <div className="container  max-w-md mx-auto md:max-w-3xl">
         <Card className="w-full  ">
           <CardHeader className="flex gap-3">
             <Avatar
