@@ -15,7 +15,7 @@ export default function useProfilePosts(_id) {
         },
       );
     }
-    const { data, isLoading, isError /*, isFetching , refetch*/ } = useQuery({
+    const { data, isLoading:isPendingPosts, isError /*, isFetching , refetch*/ } = useQuery({
       queryKey: ["getPosts"],
       queryFn: getAllPosts,
       // refetchOnMount:false,
@@ -29,5 +29,5 @@ export default function useProfilePosts(_id) {
   const allPosts = data?.data?.data?.posts;
 
 
-  return {allPosts , isLoading ,isError }
+  return {allPosts , isPendingPosts ,isError }
 }

@@ -5,7 +5,7 @@ export default function Dashboard() {
   return (
     <div>
       <Helmet>
-        <title>dashboard</title>
+        <title>dashboard is under development</title>
        </Helmet>
       Dashboard</div>
   )
