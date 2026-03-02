@@ -9,29 +9,34 @@ import { SyncLoader } from "react-spinners";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
-export default function Comment({ commentDetails, postId = null , isFirstComment = false }) {
+export default function Comment({
+  commentDetails,
+  isFirstComment = false,
+  isReply = false,
+  postId = null 
+}) {
   const [isLiked, setIsLiked] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [isReplyOn, setIsReplyOn] = useState(false);
 
-
- function handleGetProfile(){
-    return axios.get('https://route-posts.routemisr.com/users/profile-data',{
-      headers: { AUTHORIZATION: `Bearer ${localStorage.getItem("postGramTkn")}`},
-    })
+  function handleGetProfile() {
+    return axios.get("https://route-posts.routemisr.com/users/profile-data", {
+      headers: {
+        AUTHORIZATION: `Bearer ${localStorage.getItem("postGramTkn")}`,
+      },
+    });
   }
-  const{data} = useQuery({
-    queryFn:handleGetProfile,
-    queryKey:['getProfile'],
-    enabled:!!localStorage.getItem("postGramTkn") ,
-  })
-
+  const { data } = useQuery({
+    queryFn: handleGetProfile,
+    queryKey: ["getProfile"],
+    enabled: !!localStorage.getItem("postGramTkn"),
+  });
 
   function handleSetIsEdit() {
     setIsEdit(!isEdit);
   }
-  const idOfPost = postId || commentDetails.post ;
-  const { loadReplies, allCommentReplies, isLoading, isError} =
+  const idOfPost = postId || commentDetails.post;
+  const { loadReplies, allCommentReplies, isLoading, isError } =
     useGetCommentReplies(idOfPost , commentDetails._id);
 
   return (
@@ -59,38 +64,40 @@ export default function Comment({ commentDetails, postId = null , isFirstComment
               handleSetIsEdit={handleSetIsEdit}
             />
           </div>
-          {!isFirstComment && 
+          {!isFirstComment && (
             <div className="flex items-center gap-4 mt-1 ml-3 text-xs font-semibold text-gray-500">
-            <button
-              onClick={() => setIsLiked(!isLiked)}
-              className={`cursor-pointer hover:underline transition-colors ${
-                isLiked ? "text-blue-600 font-bold" : "hover:text-gray-700"
-              }`}
-            >
-              Like
-            </button>
+              <button
+                onClick={() => setIsLiked(!isLiked)}
+                className={`cursor-pointer hover:underline transition-colors ${
+                  isLiked ? "text-blue-600 font-bold" : "hover:text-gray-700"
+                }`}
+              >
+                Like
+              </button>
 
-            <button
-              onClick={() => {
-                setIsReplyOn(!isReplyOn);
-                loadReplies();
-              }}
-              className="cursor-pointer  hover:text-blue-600 hover:underline  transition-colors"
-            >
-              {isReplyOn ? (
-                <span>Hide replies</span>
-              ) : (
-                <span>Reply({commentDetails?.repliesCount || 0})</span>
+              {!isReply && (
+                <>
+                  <button
+                    onClick={() => {
+                      setIsReplyOn(!isReplyOn);
+                      loadReplies();
+                    }}
+                    className="cursor-pointer  hover:text-blue-600 hover:underline  transition-colors"
+                  >
+                    {isReplyOn ? (
+                      <span>Hide replies</span>
+                    ) : (
+                      <span>Reply({commentDetails?.repliesCount || 0})</span>
+                    )}
+                  </button>
+
+                  <span className="font-normal text-gray-400 cursor-default text-[11px]">
+                    1h
+                  </span>
+                </>
               )}
-            </button>
-
-            <span className="font-normal text-gray-400 cursor-default text-[11px]">
-              1h
-            </span>
-          </div>
-          } 
-
-          
+            </div>
+          )}
 
           {isReplyOn && (
             <>
@@ -101,20 +108,26 @@ export default function Comment({ commentDetails, postId = null , isFirstComment
                       <SyncLoader color="#F7BF2D" size={8} />
                     </div>
                   ) : isError ? (
-                    <span className=" bg-red-300 borde border-red-500 rounded-xl p-2 text-red-500">Something went wrong</span>
+                    <span className=" bg-red-300 borde border-red-500 rounded-xl p-2 text-red-500">
+                      Something went wrong
+                    </span>
                   ) : (
                     <>
                       {allCommentReplies?.map((reply) => (
                         <Comment
+                          isReply={true}
                           key={reply._id}
                           commentDetails={reply}
                           userImage={data?.data?.data?.user?.photo}
+                          postId={idOfPost}
                         />
                       ))}
                     </>
                   )
                 ) : (
-                  <p className=" mb-2 pl-25 text-gray-400 rounded-xl">no replies</p>
+                  <p className=" mb-2 pl-25 text-gray-400 rounded-xl">
+                    no replies
+                  </p>
                 )}
 
                 <div className=" flex  min-w-full ">
@@ -129,7 +142,7 @@ export default function Comment({ commentDetails, postId = null , isFirstComment
                     placeHolder={"Write a reply..."}
                     focus={true}
                     commentId={commentDetails?._id}
-                    postId={commentDetails?.post}
+                    postId={idOfPost }
                     isReply={true}
                   ></CommentCreation>
                 </div>
