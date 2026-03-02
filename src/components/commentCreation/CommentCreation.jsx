@@ -1,64 +1,32 @@
 import React, { useState, useRef } from "react";
 import { Image } from "@heroui/react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+// import { useMutation, useQueryClient } from "@tanstack/react-query";
+// import axios from "axios";
 import { IoCameraOutline, IoSend } from "react-icons/io5";
 import { BsEmojiSmile } from "react-icons/bs";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { FadeLoader, MoonLoader } from "react-spinners";
+import useCommentCreation from "../comment/commentReply/useCommentCreation";
 
-export default function CommentCreation({ postId, queryKey , isUpdating = false, UpdatedCommentData = '' }) {
+export default function CommentCreation({ focus = false , placeHolder ='Write a comment...' ,  postId = null, queryKey = null , isUpdating = false, UpdatedCommentData = '' , isReply = false , commentId = null }) {
   const [commentValue, setCommentValue] = useState("");
-  const [isFocused, setIsFocused] = useState(false);
+  const [isFocused, setIsFocused] = useState(focus);
   const [imagePreview, setimagePreview] = useState(null);
   const textareaRef = useRef(null);
   const imgRef = useRef(null);
-  const queryClientObj = useQueryClient();
-
-  function handleChangeImage(e) {
-    setimagePreview(URL.createObjectURL(e.target.files[0]));
-  }
-  function handleClearImage() {
-    setimagePreview(null);
-    imgRef.current.value = "";
-  }
-
-  function handleAddComment() {
-    const content = new FormData();
-    if (textareaRef.current.value.trim()) {
-      content.append("content", textareaRef.current.value.trim());
-    }
-    if (imgRef.current.value) {
-      content.append("image", imgRef.current.files[0]);
-    }
-
-    return axios.post(
-      `https://route-posts.routemisr.com/posts/${postId}/comments`,
-      content,
-      {
-        headers: {
-          AUTHORIZATION: `Bearer ${localStorage.getItem("postGramTkn")}`,
-        },
-      },
-    );
-  }
-
-  const { mutate, isPending } = useMutation({
-    mutationFn: handleAddComment,
-    onSuccess:  () => {
-       queryClientObj.invalidateQueries({ queryKey: queryKey });
-      setCommentValue("");
-      setIsFocused(false);
-      handleClearImage();
-      if (textareaRef.current) {
-        textareaRef.current.style.height = "auto";
-      }
-    },
-    onError: (error) => {
-      console.log(error);
-      alert("Error adding comment: " + error.response?.data?.message);
-    },
-  });
+   const { mutate, isPending ,handleClearImage ,handleChangeImage} =  useCommentCreation(
+    {
+  postId,
+  commentId, 
+  queryKey,
+  isUpdating  ,
+  UpdatedCommentData,
+  textareaRef,
+  imgRef,
+  setimagePreview,
+  setCommentValue,
+  setIsFocused,
+  isReply})
 
   const handleInput = (e) => {
     setCommentValue(e.target.value);
@@ -82,10 +50,10 @@ export default function CommentCreation({ postId, queryKey , isUpdating = false,
             value={commentValue}
             onChange={handleInput}
             onFocus={() => setIsFocused(true)}
-            placeholder="Write a comment..."
+            placeholder={placeHolder}
             rows={1}
             disabled={isPending}
-            className="w-full  bg-transparent border-none outline-none resize-none text-[15px] text-gray-800 placeholder-gray-500 min-h-[36px] max-h-[120px] overflow-y-auto py-2 px-2 dir-auto"
+            className="w-full  bg-transparent border-none outline-none resize-none text-[15px] text-gray-800 placeholder-gray-500 min-h-9 max-h-30 overflow-y-auto py-2 px-2 dir-auto"
           />
 
           {commentValue.trim().length > 0 && (
@@ -125,7 +93,7 @@ export default function CommentCreation({ postId, queryKey , isUpdating = false,
         )}
 
         {isFocused && (
-          <div className="flex items-center justify-between px-2 pb-2 mt-[-5px]">
+          <div className="flex items-center justify-between px-2 pb-2 -mt-1.25">
             <div className="flex gap-2">
               <button className="text-gray-500 hover:text-green-600 hover:bg-gray-200 p-1.5 rounded-full transition-colors">
                 <label className="cursor-pointer">

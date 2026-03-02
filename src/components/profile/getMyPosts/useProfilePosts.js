@@ -16,7 +16,7 @@ export default function useProfilePosts(_id) {
       );
     }
     const { data, isLoading:isPendingPosts, isError /*, isFetching , refetch*/ } = useQuery({
-      queryKey: ["getPosts"],
+      queryKey: ["getProfilePosts"],
       queryFn: getAllPosts,
       // refetchOnMount:false,
       // refetchInterval:3000 * 60,
@@ -27,7 +27,7 @@ export default function useProfilePosts(_id) {
       enabled: !!localStorage.getItem("postGramTkn"),
     });
   const allPosts = data?.data?.data?.posts;
+  const totalPosts =data?.data?.meta?.pagination.total 
 
-
-  return {allPosts , isPendingPosts ,isError }
+  return {totalPosts , allPosts , isPendingPosts ,isError }
 }

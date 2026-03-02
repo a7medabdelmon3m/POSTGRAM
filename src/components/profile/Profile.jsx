@@ -15,7 +15,7 @@ import { SyncLoader } from "react-spinners";
 
 export default function Profile() {
   const { userData } = useContext(authContext);
-  const { allPosts, isPendingPosts } = useProfilePosts(userData?.user);
+  const {totalPosts ,  allPosts, isPendingPosts } = useProfilePosts(userData?.user);
 
   function handleGetProfile() {
     return axios.get("https://route-posts.routemisr.com/users/profile-data", {
@@ -141,7 +141,7 @@ export default function Profile() {
             <div className="group rounded-3xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-between cursor-pointer">
               <div>
                 <h2 className="text-gray-500 font-medium mb-1">My Posts</h2>
-                <p className="text-3xl font-bold text-gray-800">24</p>
+                <p className="text-3xl font-bold text-gray-800">{totalPosts}</p>
               </div>
               <div className="bg-blue-50 p-4 rounded-full group-hover:bg-blue-100 transition-colors">
                 <FaImage size={24} className="text-blue-600" />

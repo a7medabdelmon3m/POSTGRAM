@@ -22,6 +22,7 @@ const Post = ({ post, isPostDetails }) => {
   
   const isLikedByMe = likes.some((like) => like === userData.user || false)
   // console.log(isLikedByMe);
+  // console.log('image from post component => ' , user.photo );
   
 
   const [isLiked, setIsLiked] = useState(isLikedByMe);
@@ -168,13 +169,13 @@ const Post = ({ post, isPostDetails }) => {
               
             ) : comments.length > 0 ? (
               comments.map((comment) => (
-                <Comment key={comment._id} commentDetails={comment}  />
+                <Comment key={comment._id} commentDetails={comment}   />
               ))
             ) : (
               <NoComments />
             )
           ) : (
-            firstComment && <Comment commentDetails={firstComment} />
+            firstComment && <Comment commentDetails={firstComment} postId ={_id} isFirstComment ={true} />
           )}
         </div>
 
