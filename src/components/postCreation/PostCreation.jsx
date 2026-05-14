@@ -4,16 +4,11 @@ import {
   Card,
   CardHeader,
   Image,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   Button,
   useDisclosure,
   Input,
   Textarea,
-  addToast
+  addToast,
 } from "@heroui/react";
 import { success } from "zod";
 import { IoMdCloseCircleOutline } from "react-icons/io";
@@ -23,17 +18,19 @@ import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { authContext } from "../../useContext/authContext";
 import { PulseLoader } from "react-spinners";
+import MyModal from "../modal/myModal";
+import { handleGetProfile } from "../../utils/getProfileData";
 // import { body } from "framer-motion/client";
 
 export default function PostCreation() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen,onOpen, onOpenChange } = useDisclosure();
   const [imagePreview, setimagePreview] = useState(null);
   const [postContent, setpostContent] = useState("");
   const imageEle = useRef(null);
   //   const capEle = useRef(null) ;
   const queryClientObj = useQueryClient();
 
-    // console.log(imageEle);
+  // console.log(imageEle);
 
   function handleChangeImage(e) {
     // console.log('changed' ,  );
@@ -62,15 +59,15 @@ export default function PostCreation() {
       },
     });
   }
-  const {mutate, isPending } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: handlePostCreation,
     onError: (error) => {
-        addToast({
-              title: "opps!",
-              description:error.response.data.message,
-              color: 'danger',
-              timeout:'1500'
-            })
+      addToast({
+        title: "opps!",
+        description: error.response.data.message,
+        color: "danger",
+        timeout: "1500",
+      });
     },
     onSuccess: (resp) => {
       handleClearImage();
@@ -78,13 +75,13 @@ export default function PostCreation() {
       onOpenChange(false);
       queryClientObj.invalidateQueries({ queryKey: ["getPosts"] });
       console.log(resp.data.message);
-      
+
       addToast({
-              title: "congratulations",
-              description:resp.data.message,
-              color: 'success',
-              timeout:'1500'
-            })
+        title: "congratulations",
+        description: resp.data.message,
+        color: "success",
+        timeout: "1500",
+      });
     },
     onSettled: () => {},
   });
@@ -93,22 +90,16 @@ export default function PostCreation() {
     setpostContent("");
     onOpenChange(false);
   }
-  const {user } =  useContext(authContext)
+  const { user } = useContext(authContext);
 
-  function handleGetProfile(){
-    return axios.get('https://route-posts.routemisr.com/users/profile-data',{
-      headers: { AUTHORIZATION: `Bearer ${localStorage.getItem("postGramTkn")}`},
-    })
-  }
-  const { data:userPhoto } = useQuery({
-    queryFn:handleGetProfile,
-    queryKey: ['getProfile'], 
+  const { data: userPhoto } = useQuery({
+    queryFn: handleGetProfile,
+    queryKey: ["getProfile"],
     enabled: !!localStorage.getItem("postGramTkn"),
   });
-//  console.log( 'userphoto',userPhoto.data.data.user.photo);
- 
+  //  console.log( 'userphoto',userPhoto.data.data.user.photo);
+
   return (
-    
     <div className="mb-6">
       <div className="container  max-w-md mx-auto md:max-w-3xl">
         <Card className="w-full  ">
@@ -122,7 +113,7 @@ export default function PostCreation() {
 
             <div
               onClick={onOpen}
-              className="w-full flex flex-row flex-wrap gap-4"
+              className="w-full flex flex-row flex-wrap gap-4 cursor-pointer"
             >
               <Input
                 isDisabled
@@ -137,101 +128,19 @@ export default function PostCreation() {
         </Card>
         <>
           {/* <Button onPress={onOpen}>Open Modal</Button> */}
-          <Modal isOpen={isOpen} placement="center" onOpenChange={onOpenChange}>
-            <ModalContent>
-              {() => (
-                <>
-                  <ModalHeader className="flex flex-col gap-4 items-center">
-                    Create post
-                    <Card className="self-stretch">
-                      <CardHeader className="justify-between">
-                        <div className="flex gap-5">
-                          <Avatar
-                            isBordered
-                            radius="full"
-                            color="warning"
-                            size="md"
-                            src={userPhoto?.data?.data?.user?.photo}
-                          />
-                          <div className="flex flex-col gap-1 items-start justify-center">
-                            <h4 className="text-small font-semibold leading-none text-default-600">
-                              {user?.name}
-                            </h4>
-                            <h5 className="text-small tracking-tight text-default-400">
-                              @{user?.username}
-                            </h5>
-                          </div>
-                        </div>
-                      </CardHeader>
-                    </Card>
-                  </ModalHeader>
-                  <ModalBody className="flex flex-col gap-4 ">
-                    <Textarea
-                      //    ref={capEle}
-                      value={postContent}
-                      onChange={(e) => {
-                        setpostContent(e.target.value);
-                      }}
-                      className="w-full"
-                      placeholder={`What are you thinking ${user?.name}?`}
-                    />
-                    {imagePreview && (
-                      <div className="w-full relative">
-                        <img
-                          alt="HeroUI hero Image"
-                          src={imagePreview}
-                          className="rounded-lg"
-                        />
-                        <IoMdCloseCircleOutline
-                          onClick={handleClearImage}
-                          size={24}
-                          className=" cursor-pointer absolute top-2 right-2 text-white"
-                        />
-                      </div>
-                    )}
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button className="mr-auto" radius="full">
-                      <label className=" flex justify-center items-center">
-                        <input
-                          type="file"
-                          hidden
-                          ref={imageEle}
-                          onChange={handleChangeImage}
-                        />
-                        <CiImageOn className="text-blue-700" size={24} /> 
-                        photo
-                      </label>
-                    </Button>
-
-                    <Button
-                      className="font-semibold"
-                      color="danger"
-                      onPress={handleCloseModal}
-                    >
-                      Close
-                    </Button>
-                    <Button
-                      className={`font-semibold ${isPending || (!postContent.trim() && !imagePreview && `cursor-not-allowed opacity-50`)}  `}
-                      color="success"
-                      onPress={mutate}
-                      isDisabled={
-                        isPending || (!postContent.trim() && !imagePreview)
-                      }
-
-                    >
-                      {isPending ? 
-                      <div className="flex items-center">
-                      <PulseLoader color="#F7BA1C" size={4} />  
-                      </div>
-                       
-                       : "post"}
-                    </Button>
-                  </ModalFooter>
-                </>
-              )}
-            </ModalContent>
-          </Modal>
+          <MyModal
+            handleChangeImage={handleChangeImage}
+            handleCloseModal={handleCloseModal}
+            imagePreview={imagePreview}
+            setimagePreview={setimagePreview}
+            mutate={mutate}
+            isPending ={isPending}
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+            imageEle={imageEle}
+            setpostContent={setpostContent}
+            postContent = {postContent}
+          />
         </>
       </div>
     </div>
