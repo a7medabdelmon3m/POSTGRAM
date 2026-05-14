@@ -19,6 +19,7 @@ import { authContext } from "../../useContext/authContext";
 import { CiImageOn } from "react-icons/ci";
 import { PulseLoader } from "react-spinners";
 import useShare from "../postCard/useShare";
+import { IoMdCloseCircleOutline } from "react-icons/io";
 
 export default function MyModal({
   type = "post",
