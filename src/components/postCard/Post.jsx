@@ -15,6 +15,8 @@ import { SyncLoader } from "react-spinners";
 import { authContext } from "../../useContext/authContext";
 import useLike from "./like/useLike";
 import usePosts from "./getPosts/usePosts";
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const Post = ({ post, isPostDetails }) => {
   const { body, image, user, createdAt, topComment, _id ,likes } = post;
@@ -37,12 +39,33 @@ const Post = ({ post, isPostDetails }) => {
 
 
   // Static Numbers
+
+   
+
   const likesCount = post.likesCount;
   const sharesCount = post.sharesCount;
   const firstComment = topComment;
 
   const {comments , isLoading} =  usePosts(_id)
   const {isPending ,like} = useLike(_id)
+
+  const { hash } = useLocation();
+
+useEffect(() => {
+  if (hash) {
+    const id = hash.replace('#', '');
+    const element = document.getElementById(id);
+
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      
+      element.classList.add('bg-yellow-100');
+      setTimeout(() => element.classList.remove('bg-yellow-100'), 2000);
+    }
+  }
+}, [hash, comments
+  
+]);
   return (
     <div className="bg-white border border-gray-200 rounded-xl shadow-sm mb-6 max-w-md mx-auto md:max-w-3xl overflow-hidden font-sans relative">
       {/* 1. Header Section */}

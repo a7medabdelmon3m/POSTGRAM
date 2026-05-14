@@ -82,8 +82,10 @@ const routes = createBrowserRouter([
         path: "*",
         element: (
           <>
-            <div className="h-full bg-red-500 text-blue-700 text-center"></div>
-            404
+            <div className="min-h-screen bg-amber-400  text-red-500  flex items-center justify-center text-9xl ">
+              404
+            </div>
+            
           </>
         ),
       },

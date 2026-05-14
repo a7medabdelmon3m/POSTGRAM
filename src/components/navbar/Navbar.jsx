@@ -10,13 +10,13 @@ import {
   FaUser,
   FaSignOutAlt,
 } from "react-icons/fa";
-// صورة البروفايل
-import elwan from "../../assets/images/elwan.png"; // تأكد إن الصورة موجودة
+import elwan from "../../assets/images/elwan.png"; 
 import { authContext } from "../../useContext/authContext";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@heroui/react";
 import axios from "axios";
 import { FaGear } from "react-icons/fa6";
+import NavbarNotification from "./notifications/NavbarNotification";
 
 export default function MyNavbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,7 +36,6 @@ export default function MyNavbar() {
     enabled:!!localStorage.getItem("postGramTkn") ,
   })
   
-  // دالة الستايل للروابط (Active vs Inactive)
   const getLinkClasses = ({ isActive }) =>
     `flex items-center gap-2 font-medium transition-all duration-300 hover:text-[#00644E] relative group text-sm ${
       isActive ? "text-[#00644E] font-bold" : "text-gray-500"
@@ -86,6 +85,7 @@ export default function MyNavbar() {
                 <NavLink to="/dashboard" className={getLinkClasses}>
                   <FaChartLine size={16} /> Dashboard
                 </NavLink>
+                <NavbarNotification />
               </div>
             )}
 
@@ -198,6 +198,7 @@ export default function MyNavbar() {
               >
                 <FaChartLine size={16} /> Dashboard
               </Link>
+               
             </>
           )}
 

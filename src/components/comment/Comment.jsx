@@ -8,12 +8,15 @@ import useGetCommentReplies from "./commentReply/useGetCommentReplies";
 import { SyncLoader } from "react-spinners";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { timeAgo } from "../../utils/timeFormat";
 
 export default function Comment({
   commentDetails,
   isFirstComment = false,
   isReply = false,
-  postId = null 
+  postId = null,
+  time
+  
 }) {
   const [isLiked, setIsLiked] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -50,7 +53,7 @@ export default function Comment({
           onCancel={handleSetIsEdit}
         />
       ) : (
-        <div className="flex flex-col items-start mb-2 group">
+        <div className="flex flex-col items-start mb-2 group" id={`comment-${commentDetails._id}`}>
           <div className="bg-gray-100 hover:bg-gray-200 transition-colors duration-200 px-3 py-2 rounded-2xl w-fit max-w-full">
             <CardHeader
               user={commentDetails?.commentCreator}
@@ -92,7 +95,7 @@ export default function Comment({
                   </button>
 
                   <span className="font-normal text-gray-400 cursor-default text-[11px]">
-                    1h
+                    {timeAgo(time)}
                   </span>
                 </>
               )}
@@ -120,6 +123,7 @@ export default function Comment({
                           commentDetails={reply}
                           userImage={data?.data?.data?.user?.photo}
                           postId={idOfPost}
+                          time = {reply.createdAt}
                         />
                       ))}
                     </>

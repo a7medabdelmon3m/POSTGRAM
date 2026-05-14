@@ -75,7 +75,6 @@ export default function CommentCreation({ focus = false , placeHolder ='Write a 
           )}
         </div>
 
-        {/* دلوقتي الـ Image هيشتغل صح لأننا عملنا له Import */}
         {imagePreview && (
           <div className="px-4 pb-2 relative">
             <Image

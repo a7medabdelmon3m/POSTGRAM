@@ -19,7 +19,7 @@ const queryClientConfig = new QueryClient()
     <QueryClientProvider client={queryClientConfig}>
       <AuthContextProvider>
         <HeroUIProvider>
-                <ToastProvider />
+            <ToastProvider />
             <MainRouter />
         </HeroUIProvider>
       </AuthContextProvider>

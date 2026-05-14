@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import Loading from "../loading/Loading";
 import { BiErrorCircle } from "react-icons/bi";
 
+
 export default function PostDetails() {
   const { id } = useParams();
   function getPostById() {
@@ -27,7 +28,7 @@ export default function PostDetails() {
   }
   if (isError) {
     return (
-      <div className=" min-h-screen flex  items-center justify-center">
+      <div className=" min-h-screen flex items-center justify-center">
         <div className=" flex flex-col items-center justify-center py-12 px-4 text-center max-w-md mx-auto bg-white border border-gray-200 rounded-lg shadow-sm">
           <div className="bg-red-50 p-4 rounded-full mb-4">
             <BiErrorCircle size={50} className="text-red-500" />

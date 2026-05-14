@@ -14,6 +14,7 @@ import { authContext } from "../../useContext/authContext";
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
+import { timeAgo } from "../../utils/timeFormat";
 
 
   function convertDate(rawDate) {
@@ -104,7 +105,7 @@ function showAlert(){
             {name}
           </p>
           <GoDotFill size={8} color="gray" />
-          <p className="text-xs text-gray-400">{convertDate(date)}</p>
+          <p className="text-xs text-gray-400">{timeAgo(date)}</p>
           {}
         </div>
         {/* comment content  */}
