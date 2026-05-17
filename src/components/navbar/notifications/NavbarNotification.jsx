@@ -11,16 +11,20 @@ import { FaBell } from "react-icons/fa";
 import useNoti from "./useNoti";
 function isAllNotificationsRead(arr) {
   return arr?.every((x) => x.isRead === true);
-  
 }
 
 export default function NavbarNotification() {
-  const { allNotifications, isError, isLoading, markAsRead } = useNoti();
-  console.log("allNotifications : ", allNotifications);
+  const {
+    allNotifications,
+    isError,
+    isLoading,
+    markAsRead,
+    markAllAsReadIslaoding,
+    markAllAsRead,
+  } = useNoti();
+  // console.log("allNotifications : ", allNotifications);
   console.log('isAllNotificationsRead : ' , isAllNotificationsRead(allNotifications));
   // console.log('n.topComment?._id : ', allNotifications[1]?.entity?.topComment?._id);
-  
-  
 
   return (
     <Dropdown placement="bottom-end">
@@ -37,7 +41,7 @@ export default function NavbarNotification() {
       </DropdownTrigger>
 
       {/* dropdown content */}
-      <DropdownMenu aria-label="Notifications" className="w-[380px] p-0">
+      <DropdownMenu aria-label="Notifications" className="w-95 p-0 min-h-100">
         <DropdownItem
           key="notifications"
           textValue="notifications"
@@ -47,6 +51,14 @@ export default function NavbarNotification() {
             {/* title */}
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-lg font-semibold">Notifications</h2>
+              <button
+                isLoading={markAllAsReadIslaoding}
+                onClick={markAllAsRead}
+                className={`${isAllNotificationsRead(allNotifications) ? "text-gray-500" : "text-blue-500 cursor-pointer hover:underline transition-all duration-200"}`}
+              >
+                Mark All As Read
+              </button>
+
               {allNotifications > 0 && (
                 <span className="text-sm text-blue-600">
                   {allNotifications.length} New
@@ -61,7 +73,7 @@ export default function NavbarNotification() {
                 <div className="text-center text-gray-500">loading...</div>
               ) : isError ? (
                 <div className="text-center text-red-500">There is error!</div>
-              ) : allNotifications === 0 ? (
+              ) : allNotifications.length === 0 ? (
                 <div className="text-center text-gray-500">
                   No Notifications
                 </div>
@@ -74,7 +86,7 @@ export default function NavbarNotification() {
                     time={n.createdAt}
                     read={n.isRead}
                     actor={n.actor?.name}
-                    postId = {n.entityId}
+                    postId={n.entityId}
                     commentId={n?.entity?.topComment?._id}
                     onClick={() => {
                       if (!n.isRead) {

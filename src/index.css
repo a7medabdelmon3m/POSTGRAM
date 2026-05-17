@@ -3,3 +3,24 @@
 /* Note: You may need to change the path to fit your project structure */
 @source '../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
 @custom-variant dark (&:is(.dark *));
+/* 1. بنحدد عرض السكرول بار */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px; /* العرض */
+}
+
+/* 2. لون المجرى الخلفي */
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1; /* لون رمادي فاتح جداً */
+  border-radius: 10px;
+}
+
+/* 3. لون الحتة اللي بتتحرك (الـ Thumb) */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #03d14e; /* لون أزرق نفس بتاع Tailwind blue-500 */
+  border-radius: 10px; /* عشان يبقى حوافه دائرية */
+}
+
+/* 4. تأثير لما اليوزر يقف بالماوس على السكرول */
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #02a83f; /* أزرق غامق شوية عند الـ Hover */
+}

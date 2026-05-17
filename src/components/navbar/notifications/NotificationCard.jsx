@@ -56,7 +56,7 @@ export default function NotificationCard({
       <div className="flex-1">
         <div className="flex items-center justify-between">
           <h3 className="font-semibold">
-            {title === 'comment_post' ? 'Comment': title === 'like_post' ?'React':''}
+            {title === 'comment_post' ? 'Comment': title === 'like_post' ? 'React': title === 'share_post' ?'Share' : ''}
           </h3>
 
           <span className="text-xs text-gray-400">
@@ -65,7 +65,7 @@ export default function NotificationCard({
         </div>
 
         <p className="mt-1 text-sm text-gray-500">
-          {title === 'comment_post' ? <span> <span className="text-green-500 underline">{actor}</span>  mentioned you in a comment</span> : title === 'like_post' ? <span> <span className="text-green-500 underline">{actor}</span>  liked one of your posts</span> :'' }
+          {title === 'comment_post' ? <span> <span className="text-green-500 underline">{actor}</span>  mentioned you in a comment</span> : title === 'like_post' ? <span> <span className="text-green-500 underline">{actor}</span>  liked one of your posts</span> : title === 'share_post' ? <span> <span className="text-green-500 underline">{actor}</span>  Shared Your Post </span> :'' }
           
         </p>
       </div>
