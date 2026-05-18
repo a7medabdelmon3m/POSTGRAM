@@ -11,6 +11,7 @@ import AntiProtectedRouter from "../antiProtectedRouter/AntiProtectedRouter";
 import ProtectedRouter from "../protectedRouter/ProtectedRouter";
 import PostDetails from "../postDetails/PostDetails";
 import Setting from "../setting/Setting";
+import SavedPostsPage from "../savedPosts/savedPosts";
 
 const routes = createBrowserRouter([
   {
@@ -30,6 +31,14 @@ const routes = createBrowserRouter([
         element: (
           <ProtectedRouter>
             <Home />
+          </ProtectedRouter>
+        ),
+      },
+      {
+        path: "saved-posts",
+        element: (
+          <ProtectedRouter>
+            <SavedPostsPage />
           </ProtectedRouter>
         ),
       },

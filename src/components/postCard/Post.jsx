@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { AiFillHeart } from "react-icons/ai";
 import { BiSolidLike, BiLike } from "react-icons/bi";
-import { FaRegCommentAlt, FaShare } from "react-icons/fa";
+import { FaBookmark, FaRegCommentAlt, FaShare } from "react-icons/fa";
 import { FiMoreHorizontal, FiExternalLink } from "react-icons/fi";
 import CardHeader from "../cardHeader/CardHeader";
 import Comment from "../comment/Comment";
@@ -20,6 +20,7 @@ import { useLocation } from "react-router-dom";
 import useShare from "./useShare";
 import MyModal from "../modal/myModal";
 import { useDisclosure } from "@heroui/react";
+import PostLikesDropdown from "./likesMenue";
 
 const Post = ({ post, isPostDetails, isInsideSheared = false }) => {
   const {
@@ -32,6 +33,7 @@ const Post = ({ post, isPostDetails, isInsideSheared = false }) => {
     topComment,
     _id,
     likes,
+    bookmarked,
   } = post;
   const { userData } = useContext(authContext);
   const isLikedByMe = likes.some((like) => like === userData.user || false);
@@ -60,19 +62,33 @@ const Post = ({ post, isPostDetails, isInsideSheared = false }) => {
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl shadow-sm mb-6 max-w-md mx-auto md:max-w-3xl overflow-hidden font-sans relative">
-      <MyModal postId={_id} type="shared" isOpen={isOpen} onOpenChange={onOpenChange} postContent={sharedPostBodt} setpostContent={setsharedPostBodt} />
+      <MyModal
+        postId={_id}
+        type="shared"
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        postContent={sharedPostBodt}
+        setpostContent={setsharedPostBodt}
+      />
       {/* 1. Header Section */}
       <div className="flex items-center justify-between px-4 py-3 relative bg-[#F0F2F5] ">
         <CardHeader user={user} date={createdAt} cat={"post"} />
-        {!isInsideSheared && (
-          <PostSettings
-            user={user}
-            isMyPost={false}
-            userData={userData}
-            postId={_id}
-            postContent={{ body, image }}
-          />
-        )}
+        <div className="flex items-center gap-2">
+          {bookmarked && (
+            <FaBookmark className="text-primary" title="Saved Post" />
+          )}
+
+          {!isInsideSheared && (
+            <PostSettings
+              user={user}
+              isMyPost={false}
+              userData={userData}
+              postId={_id}
+              postContent={{ body, image }}
+              bookmarked={bookmarked}
+            />
+          )}
+        </div>
       </div>
 
       {/* 2. Post Body */}
@@ -105,19 +121,8 @@ const Post = ({ post, isPostDetails, isInsideSheared = false }) => {
           {/* 4. Stats Bar (Stats & View Details Link) */}
           <div className="px-4 py-3 flex justify-between items-center text-gray-500 text-sm border-b border-gray-200 mx-2">
             {/* Left: Likes */}
-            <div className="flex items-center gap-1 cursor-pointer group">
-              <div className="flex -space-x-1.5 overflow-hidden">
-                <div className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-linear-to-br from-blue-500 to-blue-600 text-white border-2 border-white z-20">
-                  <BiSolidLike size={10} />
-                </div>
-                <div className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-linear-to-br from-red-500 to-red-600 text-white border-2 border-white z-10">
-                  <AiFillHeart size={10} />
-                </div>
-              </div>
-              <span className="ml-1 group-hover:underline text-gray-600">
-                {likesCount}
-              </span>
-            </div>
+
+            <PostLikesDropdown likesCount={likesCount} postId={_id} />
 
             {/* Right: Comments, Shares & View Details */}
             <div className="flex items-center gap-3 text-gray-500 text-xs sm:text-sm">

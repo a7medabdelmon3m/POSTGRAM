@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import Loading from "../loading/Loading";
 import { BiErrorCircle } from "react-icons/bi";
 import UploadProfileImage from "../uplaodProfileImage/UploadProfileImage";
-import { Avatar } from "@heroui/react";
+import { Avatar, Link } from "@heroui/react";
 import Post from "../postCard/Post";
 import useProfilePosts from "./getMyPosts/useProfilePosts";
 import { useContext } from "react";
@@ -148,15 +148,15 @@ export default function Profile() {
               </div>
             </div>
 
-            <div className="group rounded-3xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-between cursor-pointer">
+            <Link href="/saved-posts" className="group rounded-3xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-between cursor-pointer">
               <div>
                 <h2 className="text-gray-500 font-medium mb-1">Saved Posts</h2>
-                <p className="text-3xl font-bold text-gray-800">12</p>
+                <p className="text-3xl font-bold text-gray-800">{profileData.user.bookmarksCount}</p>
               </div>
               <div className="bg-purple-50 p-4 rounded-full group-hover:bg-purple-100 transition-colors">
                 <FaBookmark size={24} className="text-purple-600" />
               </div>
-            </div>
+            </Link>
           </div>
         </div>
       </div>

@@ -21,8 +21,10 @@ import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import PostEdition from "../postEdition/PostEdition";
 import Swal from "sweetalert2";
+import usePostSetting from "./usePostSetting";
+import { FaBookmark } from "react-icons/fa";
 
-export default function PostSettings({ user, userData, postId , postContent }) {
+export default function PostSettings({ user, userData, postId , postContent ,bookmarked }) {
       const { isOpen, onOpen, onOpenChange } = useDisclosure();
 // console.log('post content from postSetting' , postContent);
   const { name, _id } = user;
@@ -72,7 +74,7 @@ export default function PostSettings({ user, userData, postId , postContent }) {
       });
     },
   });
-
+const {savePost} = usePostSetting(postId)
   return (
     <>
       <Dropdown placement="bottom-end">
@@ -89,11 +91,13 @@ export default function PostSettings({ user, userData, postId , postContent }) {
 
         <DropdownMenu aria-label="Post Actions" variant="faded">
           <DropdownItem
+          onClick={savePost}
             key="save"
             textValue="save"
-            startContent={<BsBookmark className={iconClasses} />}
+            startContent={bookmarked ? <FaBookmark className={`text-primary ${iconClasses}`}/> : <BsBookmark className={`${iconClasses}`} />}
           >
-            Save Post
+            {bookmarked ? 'cancel saving' : 'Save Post'}
+            
           </DropdownItem>
 
           <DropdownItem
