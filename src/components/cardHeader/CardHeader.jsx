@@ -14,15 +14,15 @@ import { authContext } from "../../useContext/authContext";
 import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-import { timeAgo } from "../../utils/timeFormat";
+import { formatPostTimeAgo, timeAgo } from "../../utils/timeFormat";
 
 
-  function convertDate(rawDate) {
-    const date = new Date(rawDate);
-    const options = { day: "2-digit", month: "short", year: "numeric" };
-    const formattedDate = date.toLocaleDateString("en-GB", options);
-    return formattedDate;
-  }
+  // function convertDate(rawDate) {
+  //   const date = new Date(rawDate);
+  //   const options = { day: "2-digit", month: "short", year: "numeric" };
+  //   const formattedDate = date.toLocaleDateString("en-GB", options);
+  //   return formattedDate;
+  // }
   
 
 export default function CardHeader({
@@ -161,7 +161,7 @@ function showAlert(){
         <p className="font-bold text-sm text-[#02624B] hover:underline cursor-pointer">
           {name}
         </p>
-        <p className="text-xs text-gray-400">{convertDate(date)}</p>
+        <p className="text-xs text-gray-400">{formatPostTimeAgo(date)}</p>
       </div>
     </div>
   );

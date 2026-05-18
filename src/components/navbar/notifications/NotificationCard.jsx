@@ -35,7 +35,7 @@ export default function NotificationCard({
     >
       {/* unread dot */}
       {!read && (
-        <span className="absolute right-4 top-4 h-3 w-3 rounded-full bg-blue-500" />
+        <span className="absolute right-4 top-2 h-3 w-3 rounded-full bg-blue-500" />
       )}
 
       {/* icon */}

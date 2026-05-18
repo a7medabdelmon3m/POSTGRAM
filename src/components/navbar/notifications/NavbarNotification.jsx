@@ -9,12 +9,16 @@ import {
 import Notification from "./index";
 import { FaBell } from "react-icons/fa";
 import useNoti from "./useNoti";
+import { useEffect } from "react";
 function isAllNotificationsRead(arr) {
   return arr?.every((x) => x.isRead === true);
 }
 
 export default function NavbarNotification() {
+  
   const {
+    getUnreadCount,
+    count,
     allNotifications,
     isError,
     isLoading,
@@ -25,6 +29,9 @@ export default function NavbarNotification() {
   // console.log("allNotifications : ", allNotifications);
   console.log('isAllNotificationsRead : ' , isAllNotificationsRead(allNotifications));
   // console.log('n.topComment?._id : ', allNotifications[1]?.entity?.topComment?._id);
+  useEffect(() =>{
+    getUnreadCount
+  } ,[allNotifications,markAsRead])
 
   return (
     <Dropdown placement="bottom-end">
@@ -34,8 +41,8 @@ export default function NavbarNotification() {
           <FaBell className="h-5 w-5" />
 
           {/* unread badge */}
-          {!isAllNotificationsRead(allNotifications) && (
-            <span className="absolute right-1 top-1 h-2.5 w-2.5 rounded-full bg-red-500" />
+          { !isLoading &&  !isAllNotificationsRead(allNotifications) && (
+            <span className="absolute right-1 top-1 text-xs text-white w-4 h-4 rounded-full bg-red-500">{count}</span>
           )}
         </button>
       </DropdownTrigger>
