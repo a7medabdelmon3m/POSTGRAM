@@ -12,13 +12,14 @@ import {
 } from "react-icons/fa";
 import elwan from "../../assets/images/elwan.png"; 
 import { authContext } from "../../useContext/authContext";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "@heroui/react";
 import axios from "axios";
 import { FaGear } from "react-icons/fa6";
 import NavbarNotification from "./notifications/NavbarNotification";
 
 export default function MyNavbar() {
+  const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const navigate = useNavigate();
@@ -44,6 +45,8 @@ export default function MyNavbar() {
   function handleLogOut() {
     localStorage.removeItem("postGramTkn");
     localStorage.removeItem("userData");
+    queryClient.clear();
+    queryClient.invalidateQueries({ queryKey: ["getFollowSuggestion"] });
     clearAuthContextToken();
     navigate("/login");
   }
