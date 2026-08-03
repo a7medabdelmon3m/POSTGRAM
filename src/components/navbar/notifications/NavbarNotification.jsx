@@ -80,12 +80,12 @@ export default function NavbarNotification() {
                 <div className="text-center text-gray-500">loading...</div>
               ) : isError ? (
                 <div className="text-center text-red-500">There is error!</div>
-              ) : allNotifications.length === 0 ? (
+              ) : allNotifications?.length === 0 ? (
                 <div className="text-center text-gray-500">
                   No Notifications
                 </div>
               ) : (
-                allNotifications.map((n) => (
+                allNotifications?.map((n) => (
                   <Notification.Card
                     key={n._id}
                     title={n.type}

@@ -1,88 +1,113 @@
-// import axios from "axios";
-import Post from "../postCard/Post";
-import { FaLessThan } from "react-icons/fa6";
-import Loading from "../loading/Loading";
-import { BiErrorCircle } from "react-icons/bi";
-// import { useQuery } from "@tanstack/react-query";
-import PostCreation from "../postCreation/PostCreation";
+import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
+import { BiErrorCircle } from "react-icons/bi";
+
 import useHome from "./useHome";
+import Post from "../postCard/Post";
+import Loading from "../loading/Loading";
+import PostCreation from "../postCreation/PostCreation";
 
 export default function Home() {
-  // const [allPosts, setAllPosts] = useState(null);
-  // const [isLoading, setisLoading] = useState(true);
-  // const [isError, setIsError] = useState(false);
-  // function getAllPosts() {
-  //   setIsError(false);
-  //   setisLoading(true);
-  //   axios
-  //     .get("https://linked-posts.routemisr.com/posts?sort=-createdAt", {
-  //       headers: { token: localStorage.getItem("postGramTkn") },
-  //     })
-  //     .then(function (resp) {
-  //       console.log("response : => ", resp.data.posts);
+  const [feedType, setFeedType] = useState("all");
+  
+  const { 
+    allPosts, 
+    isLoading, 
+    isError, 
+    refetch, 
+    fetchNextPage, 
+    hasNextPage, 
+    isFetchingNextPage 
+  } = useHome(feedType);
 
-  //       setAllPosts(resp.data.posts);
-  //     })
-  //     .catch(function (error) {
-  //       console.log("error : => ", error);
-  //       setIsError(true);
-  //     })
-  //     .finally(function () {
-  //       setisLoading(false);
-  //     });
-  // }
-  // useEffect(function () {
-  //   getAllPosts();
-  // }, []);
- 
- const {allPosts, isLoading , isError ,getAllPosts} = useHome()
-  if (isLoading) {
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrolledToBottom =
+        window.innerHeight + document.documentElement.scrollTop >=
+        document.documentElement.offsetHeight - 200;
+
+      if (scrolledToBottom && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  if (isLoading && !isFetchingNextPage) {
     return <Loading />;
   }
+
   if (isError) {
     return (
-      <div className=" min-h-screen flex  items-center justify-center">
-        <div className=" flex flex-col items-center justify-center py-12 px-4 text-center max-w-117.5 mx-auto bg-white border border-gray-200 rounded-lg shadow-sm">
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center justify-center py-12 px-4 text-center max-w-[470px] mx-auto bg-white border border-gray-200 rounded-lg shadow-sm">
           <div className="bg-red-50 p-4 rounded-full mb-4">
             <BiErrorCircle size={50} className="text-red-500" />
           </div>
-
           <h3 className="text-lg font-bold text-gray-800 mb-1">
             Oops! Something went wrong
           </h3>
           <p className="text-gray-500 text-sm mb-4">
-            We couldn't retrieve the posts at the moment. Please check your
-            connection or try again later.
+            We couldn't retrieve the posts at the moment. Please check your connection or try again later.
           </p>
-
           <button
-            onClick={getAllPosts}
+            onClick={() => refetch()} 
             className="bg-gray-800 text-white px-6 py-2 rounded-md text-sm font-medium hover:bg-black transition-colors"
           >
             Try Again
           </button>
         </div>
-        ;
       </div>
     );
   }
-  // console.log(data.data.data.posts);
 
   return (
     <div className="container mx-auto py-8">
       <Helmet>
-        <title> postgram</title>
+        <title>Postgram - Home</title>
       </Helmet>
+      
       <PostCreation />
+
+      <div className="flex bg-gray-100 p-1 rounded-xl max-w-sm mx-auto mb-8 mt-4 shadow-inner">
+        <button
+          onClick={() => setFeedType("all")}
+          className={`flex-1 py-2.5 text-center rounded-lg font-bold text-sm transition-all duration-300 ${
+            feedType === "all"
+              ? "bg-white text-gray-900 shadow-sm"
+              : "text-gray-500 hover:text-gray-700"
+          }`}
+        >
+          All Posts
+        </button>
+        <button
+          onClick={() => setFeedType("following")}
+          className={`flex-1 py-2.5 text-center rounded-lg font-bold text-sm transition-all duration-300 ${
+            feedType === "following"
+              ? "bg-white text-gray-900 shadow-sm"
+              : "text-gray-500 hover:text-gray-700"
+          }`}
+        >
+          Following
+        </button>
+      </div>
+
       {allPosts?.map((post) => (
         <Post
           key={post._id}
           post={post}
           isPostDetails={false}
-          queryKey={["getPosts"]}
+          queryKey={["getPosts", feedType]} 
         />
       ))}
+
+      {isFetchingNextPage && (
+        <div className="flex justify-center py-6">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        </div>
+      )}
     </div>
   );
 }

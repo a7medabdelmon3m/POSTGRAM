@@ -10,6 +10,7 @@ import { AiFillHeart, AiFillLike } from "react-icons/ai";
 import { BiSolidLike } from "react-icons/bi";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 // بيانات تجريبية للأشخاص اللي عملوا لايك
 // const likersData = [
@@ -31,6 +32,10 @@ import { useQuery } from "@tanstack/react-query";
 // ];
 
 export default function PostLikesDropdown({ likesCount, postId }) {
+
+  const navigate = useNavigate() ;
+
+ 
   const getPostLiks = async () => {
     return await axios.get(
       `https://route-posts.routemisr.com/posts/${postId}/likes`,
@@ -50,7 +55,9 @@ export default function PostLikesDropdown({ likesCount, postId }) {
   const liksList = data?.data?.data?.likes || [];
 //   console.log('liksList : ', liksList);
   
-
+ function handleNavigation(id){
+    navigate(`/UserProfile/${id}`)
+  }
   return (
     <div className="flex items-center justify-center">
       <Dropdown placement="bottom-start" className="w-64 p-0">
@@ -80,6 +87,7 @@ export default function PostLikesDropdown({ likesCount, postId }) {
         <DropdownMenu className="max-h-68 overflow-y-auto" aria-label="قائمة المعجبين بالبوست" variant="faded">
           {liksList.map((user) => (
             <DropdownItem
+            onClick={() => {handleNavigation(user.id || user._id)}}
               key={user._id}
               textValue={user.name}
               className="hover:bg-default-100 p-2"

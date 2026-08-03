@@ -206,7 +206,7 @@ const Post = ({ post, isPostDetails, isInsideSheared = false }) => {
                   </div>
                 ) : comments.length > 0 ? (
                   comments.map((comment) => (
-                    <Comment key={comment._id} commentDetails={comment} />
+                    <Comment key={comment._id} commentDetails={comment} postId={_id} />
                   ))
                 ) : (
                   <NoComments />

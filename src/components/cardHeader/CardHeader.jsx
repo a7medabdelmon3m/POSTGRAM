@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import elwan from "../../assets/images/elwan.png";
 import { GoDotFill } from "react-icons/go";
 import { AiOutlineHeart } from "react-icons/ai";
-import { addToast, Button, Image } from "@heroui/react";
+import { addToast, Button, Image, Link } from "@heroui/react";
 import {
   Dropdown,
   DropdownItem,
@@ -86,7 +86,7 @@ function showAlert(){
     }
   })
 
-  //   console.log(user);
+    // console.log(user._id);
 
   return cat === "comment" ? (
     <div className="flex  items-start space-x-3">
@@ -158,9 +158,9 @@ function showAlert(){
         }}
       />
       <div className="flex flex-col">
-        <p className="font-bold text-sm text-[#02624B] hover:underline cursor-pointer">
+        <Link href={`/UserProfile/${user._id}` }className="font-bold text-sm text-[#02624B] hover:underline cursor-pointer">
           {name}
-        </p>
+        </Link>
         <p className="text-xs text-gray-400">{formatPostTimeAgo(date)}</p>
       </div>
     </div>

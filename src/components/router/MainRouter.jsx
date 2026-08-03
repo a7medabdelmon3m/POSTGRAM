@@ -12,6 +12,8 @@ import ProtectedRouter from "../protectedRouter/ProtectedRouter";
 import PostDetails from "../postDetails/PostDetails";
 import Setting from "../setting/Setting";
 import SavedPostsPage from "../savedPosts/savedPosts";
+import UserProfile from "../userProfile/UserProfile";
+import NotFound from "../notFound/NotFound";
 
 const routes = createBrowserRouter([
   {
@@ -47,6 +49,14 @@ const routes = createBrowserRouter([
         element: (
           <ProtectedRouter>
             <PostDetails />
+          </ProtectedRouter>
+        ),
+      },
+      {
+        path: "userProfile/:id",
+        element: (
+          <ProtectedRouter>
+            <UserProfile />
           </ProtectedRouter>
         ),
       },
@@ -90,12 +100,7 @@ const routes = createBrowserRouter([
       {
         path: "*",
         element: (
-          <>
-            <div className="min-h-screen bg-amber-400  text-red-500  flex items-center justify-center text-9xl ">
-              404
-            </div>
-            
-          </>
+          <NotFound/>
         ),
       },
     ],

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import CardHeader from "../cardHeader/CardHeader";
 import { BsThreeDots } from "react-icons/bs";
 import EditComment from "./editComment/EditComment";
@@ -9,6 +9,8 @@ import { SyncLoader } from "react-spinners";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { timeAgo } from "../../utils/timeFormat";
+import useCommentLike from "./useCommentLike";
+import { authContext } from "../../useContext/authContext";
 
 export default function Comment({
   commentDetails,
@@ -18,9 +20,18 @@ export default function Comment({
   time
   
 }) {
-  const [isLiked, setIsLiked] = useState(false);
+
+    const { userData } = useContext(authContext);
+  
+  const isLikedByMe = commentDetails.likes.some((like) => like === userData.user || false)
+  const [isLiked, setIsLiked] = useState(isLikedByMe);
   const [isEdit, setIsEdit] = useState(false);
   const [isReplyOn, setIsReplyOn] = useState(false);
+
+// console.log('postId : ' , postId);
+
+const {like } = useCommentLike(postId ,commentDetails.id || commentDetails._id )
+
 
   function handleGetProfile() {
     return axios.get("https://route-posts.routemisr.com/users/profile-data", {
@@ -70,7 +81,10 @@ export default function Comment({
           {!isFirstComment && (
             <div className="flex items-center gap-4 mt-1 ml-3 text-xs font-semibold text-gray-500">
               <button
-                onClick={() => setIsLiked(!isLiked)}
+                onClick={() => {
+                  setIsLiked(!isLiked);
+                  like()
+                }}
                 className={`cursor-pointer hover:underline transition-colors ${
                   isLiked ? "text-blue-600 font-bold" : "hover:text-gray-700"
                 }`}

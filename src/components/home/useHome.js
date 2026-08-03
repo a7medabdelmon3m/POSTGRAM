@@ -1,31 +1,54 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import React from 'react'
 
-export default function useHome() {
-   function getAllPosts() {
-      return axios.get(
-        "https://route-posts.routemisr.com/posts?sort=-createdAt",
-        {
-          headers: {
-            AUTHORIZATION: `Bearer ${localStorage.getItem("postGramTkn")}`,
-          },
-        },
-      );
-    }
-    const { data, isLoading, isError /*, isFetching , refetch*/ } = useQuery({
-      queryKey: ["getPosts"],
-      queryFn: getAllPosts,
-      // refetchOnMount:false,
-      // refetchInterval:3000 * 60,
-      // retry:5,
-      // retryDelay:2000,
-      // staleTime:5000,
-      // gcTime:3000,
-      enabled: !!localStorage.getItem("postGramTkn"),
+export default function useHome(feedType = "all") {
+  const getPosts = async ({ pageParam = 1 }) => {
+    const endpoint =
+      feedType === "following"
+        ? `https://route-posts.routemisr.com/posts/feed?only=following&limit=10&page=${pageParam}`
+        : `https://route-posts.routemisr.com/posts?sort=-createdAt&limit=10&page=${pageParam}`;
+
+    const response = await axios.get(endpoint, {
+      headers: {
+        AUTHORIZATION: `Bearer ${localStorage.getItem("postGramTkn")}`,
+      },
     });
-  const allPosts = data?.data?.data?.posts;
+    
+    return response;
+  };
 
+  const {
+    data,
+    isLoading,
+    isError,
+    refetch,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["getPosts", feedType],
+    queryFn: getPosts,
+    getNextPageParam: (lastPage, allPages) => {
+      const posts = lastPage?.data?.posts || lastPage?.data?.data?.posts || [];
+      if (posts.length === 10) {
+        return allPages.length + 1;
+      }
+      return undefined;
+    },
+    enabled: !!localStorage.getItem("postGramTkn"),
+  });
 
-    return {allPosts, isLoading , isError ,getAllPosts}
+  const allPosts = data?.pages.flatMap(
+    (page) => page?.data?.posts || page?.data?.data?.posts || []
+  ) || [];
+
+  return { 
+    allPosts, 
+    isLoading, 
+    isError, 
+    refetch, 
+    fetchNextPage, 
+    hasNextPage, 
+    isFetchingNextPage 
+  };
 }
