@@ -1,28 +1,28 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { AiFillHeart } from "react-icons/ai";
 import { BiSolidLike, BiLike } from "react-icons/bi";
 import { FaBookmark, FaRegCommentAlt, FaShare } from "react-icons/fa";
 import { FiMoreHorizontal, FiExternalLink } from "react-icons/fi";
 import CardHeader from "../cardHeader/CardHeader";
 import Comment from "../comment/Comment";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import PostSettings from "../postSettings/PostSettings";
 import CommentCreation from "../commentCreation/CommentCreation";
-// import axios from "axios";
-// import { useQuery } from "@tanstack/react-query";
 import NoComments from "../noComments/NoComments";
 import { SyncLoader } from "react-spinners";
 import { authContext } from "../../useContext/authContext";
 import useLike from "./like/useLike";
 import usePosts from "./getPosts/usePosts";
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import useShare from "./useShare";
 import MyModal from "../modal/myModal";
 import { useDisclosure } from "@heroui/react";
 import PostLikesDropdown from "./likesMenue";
 
 const Post = ({ post, isPostDetails, isInsideSheared = false }) => {
+  const { userData } = useContext(authContext);
+  const [sharedPostBodt, setsharedPostBodt] = useState("");
+  const postData = post || {};
+
   const {
     isShare,
     sharedPost,
@@ -32,20 +32,23 @@ const Post = ({ post, isPostDetails, isInsideSheared = false }) => {
     createdAt,
     topComment,
     _id,
-    likes,
+    likes = [],
     bookmarked,
-  } = post;
-  const { userData } = useContext(authContext);
+  } = postData;
   const isLikedByMe = likes.some((like) => like === userData.user || false);
   const [isLiked, setIsLiked] = useState(isLikedByMe);
-  const likesCount = post.likesCount;
-  const sharesCount = post.sharesCount;
+  const likesCount = postData.likesCount || 0;
+  const sharesCount = postData.sharesCount || 0;
   const firstComment = topComment;
-  const { comments, isLoading } = usePosts(_id);
-  const { isPending, like } = useLike(_id);
+  const { comments, isLoading } = usePosts(_id || "");
+  const { isPending, like } = useLike(_id || "");
   const { isOpen, onOpenChange } = useDisclosure();
   const { hash } = useLocation();
-  const [sharedPostBodt, setsharedPostBodt] = useState("");
+
+  useEffect(() => {
+    setIsLiked(isLikedByMe);
+  }, [isLikedByMe]);
+
   useEffect(() => {
     if (hash) {
       const id = hash.replace("#", "");
@@ -53,12 +56,13 @@ const Post = ({ post, isPostDetails, isInsideSheared = false }) => {
 
       if (element) {
         element.scrollIntoView({ behavior: "smooth", block: "center" });
-
         element.classList.add("bg-yellow-100");
         setTimeout(() => element.classList.remove("bg-yellow-100"), 2000);
       }
     }
   }, [hash, comments]);
+
+  if (!post) return null;
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl shadow-sm mb-6 max-w-md mx-auto md:max-w-3xl overflow-hidden font-sans relative">
@@ -121,7 +125,6 @@ const Post = ({ post, isPostDetails, isInsideSheared = false }) => {
           {/* 4. Stats Bar (Stats & View Details Link) */}
           <div className="px-4 py-3 flex justify-between items-center text-gray-500 text-sm border-b border-gray-200 mx-2">
             {/* Left: Likes */}
-
             <PostLikesDropdown likesCount={likesCount} postId={_id} />
 
             {/* Right: Comments, Shares & View Details */}

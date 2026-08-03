@@ -101,9 +101,9 @@ function showAlert(){
       />
       <div>
         <div className="flex items-center gap-1">
-          <p className="font-bold text-sm text-[#02624B] hover:underline cursor-pointer">
+          <Link href={`/UserProfile/${commentCreatorId}`}className="font-bold text-sm text-[#02624B] hover:underline cursor-pointer">
             {name}
-          </p>
+          </Link>
           <GoDotFill size={8} color="gray" />
           <p className="text-xs text-gray-400">{timeAgo(date)}</p>
           {}
@@ -152,7 +152,7 @@ function showAlert(){
       <img
         src={photo}
         alt={name}
-        className="w-10 h-10 rounded-full object-cover border-2 border-[#589FC7] p-[1px] cursor-pointer" // برواز أزرق للصورة
+        className="w-10 h-10 rounded-full object-cover border-2 border-[#589FC7] p-px cursor-pointer" // برواز أزرق للصورة
         onError={(e) => {
           e.target.src = elwan;
         }}

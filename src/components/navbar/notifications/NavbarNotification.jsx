@@ -95,6 +95,7 @@ export default function NavbarNotification() {
                     actor={n.actor?.name}
                     postId={n.entityId}
                     commentId={n?.entity?.topComment?._id}
+                    actorId = {n.actor._id}
                     onClick={() => {
                       if (!n.isRead) {
                         markAsRead(n._id);
