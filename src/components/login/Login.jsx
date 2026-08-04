@@ -6,6 +6,8 @@ import {
   FaCalendarAlt,
   FaVenusMars,
   FaPaperPlane,
+  FaEye,
+  FaEyeSlash,
 } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo (2).svg";
@@ -53,31 +55,15 @@ const registerSchema = z.object({
 });
 
 export default function Login() {
-  // Libraries( formik ,react-hook-form (RHF) ) => get values and put values from and in inputs + validation
-
-  // Formik => disadvantages => multible renders
-
-  // RHF => handle inputs useing refrences no states !!
-
-  // const [usernameValue, setUsernameValue] = useState('')
-
-  //  function getUsernameValue(e){
-  //    const val = e.target.value ;
-  //   setUsernameValue(val) ;
-  //   console.log(val);
-
-  //  }
-  const { /*setUser, userToken,*/ setAuthContextToken   } = useContext(authContext);
+  const { setAuthContextToken } = useContext(authContext);
   const navigate = useNavigate();
   const [showLoading, setShowLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); 
+
   const {
     handleSubmit,
     register,
     formState,
-    // setError,
-    // getValues,
-    // trigger,
-    // watch,
   } = useForm({
     defaultValues: {
       email: "",
@@ -88,10 +74,6 @@ export default function Login() {
   });
 
   function myHandleSubmit(vals) {
-    // e.preventDefault();
-    // console.log(vals);
-    // const {data} = await axios.post('https://linked-posts.routemisr.com/users/signup')
-    // console.log(data);
     setShowLoading(true);
     axios
       .post("https://route-posts.routemisr.com/users/signin", vals, {
@@ -121,17 +103,12 @@ export default function Login() {
       });
   }
 
-  // const obj =  register('name')
-  // console.log(formState.errors) ;
-
   return (
-    <div className="min-h-screen flex items-center justify-center   p-4">
-      {/* <button onClick={()=> confirmationEvent('sorry , there is problem ! 😥' , '#F2103B')} className="bg-amber-600 p-3">ahmed</button> */}
-
+    <div className="min-h-screen flex items-center justify-center p-4">
       {/* Container */}
       <div className="w-full max-w-lg bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl overflow-hidden transform transition-all hover:scale-[1.01] duration-300">
         {/* Header & Logo */}
-        <img className=" animate-pulse" src={logo} alt="postman logo" />
+        <img className="animate-pulse" src={logo} alt="postman logo" />
 
         {/* Form */}
         <form
@@ -144,16 +121,7 @@ export default function Login() {
               <FaEnvelope className="text-[#065F48] group-focus-within:text-[#F7BA1C] transition-colors duration-300" />
             </div>
             <input
-              {...register(
-                "email",
-                // {
-                //   required: { value: true, message: "Email Is Required !!" },
-                //   pattern: {
-                //     value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{3,}$/,
-                //     message: "Email Is Not In Format !!",
-                //   },
-                // }
-              )}
+              {...register("email")}
               type="email"
               placeholder="Email Address"
               className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#00644E] focus:ring-1 focus:ring-[#00644E] transition-all bg-gray-50"
@@ -165,30 +133,27 @@ export default function Login() {
             )}
           </div>
 
-          {/* Password & Re-password Grid */}
-          <div className="grid grid-cols-1  gap-4">
+          {/* Password */}
+          <div className="grid grid-cols-1 gap-4">
             <div className="relative group">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <FaLock className="text-[#065F48] group-focus-within:text-[#F7BA1C] transition-colors duration-300" />
               </div>
               <input
-                {...register(
-                  "password",
-                  // ,{
-                  //   required: { value: true, message: "Password Is Required !!" },
-                  //   pattern:{value:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*-+=])(?!\s).{8,20}$/,
-                  //     message:'Password Is Not In Format !!'
-                  //    },
-                  //    onChange: () => {
-                  //     if (watch('rePassword')) trigger('rePassword');
-                  //    }
-
-                  // }
-                )}
-                type="password"
+                {...register("password")}
+                type={showPassword ? "text" : "password"} 
                 placeholder="Password"
-                className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#00644E] focus:ring-1 focus:ring-[#00644E] transition-all bg-gray-50"
+                className="w-full pl-10 pr-10 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#00644E] focus:ring-1 focus:ring-[#00644E] transition-all bg-gray-50"
               />
+              
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#065F48] hover:text-[#F7BA1C] transition-colors duration-300"
+              >
+                {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+              </button>
+
               {formState.errors.password &&
                 formState.touchedFields.password && (
                   <p className="text-red-700 text-sm font-semibold ml-2 mt-1">

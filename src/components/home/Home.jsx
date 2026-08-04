@@ -42,7 +42,7 @@ export default function Home() {
   if (isError) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="flex flex-col items-center justify-center py-12 px-4 text-center max-w-[470px] mx-auto bg-white border border-gray-200 rounded-lg shadow-sm">
+        <div className="flex flex-col items-center justify-center py-12 px-4 text-center max-w-117.5 mx-auto bg-white border border-gray-200 rounded-lg shadow-sm">
           <div className="bg-red-50 p-4 rounded-full mb-4">
             <BiErrorCircle size={50} className="text-red-500" />
           </div>
@@ -64,7 +64,7 @@ export default function Home() {
   }
 
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto py-8 px-4">
       <Helmet>
         <title>Postgram - Home</title>
       </Helmet>
@@ -94,14 +94,31 @@ export default function Home() {
         </button>
       </div>
 
-      {allPosts?.map((post) => (
-        <Post
-          key={post._id}
-          post={post}
-          isPostDetails={false}
-          queryKey={["getPosts", feedType]} 
-        />
-      ))}
+      {allPosts?.length > 0 ? (
+        allPosts.map((post) => (
+          <Post
+            key={post._id}
+            post={post}
+            isPostDetails={false}
+            queryKey={["getPosts", feedType]} 
+          />
+        ))
+      ) : (
+        !isLoading && (
+          <div className="flex flex-col items-center justify-center py-16 px-4 text-center bg-white border border-gray-200 rounded-xl shadow-sm max-w-2xl mx-auto mt-6">
+            <h3 className="text-xl font-bold text-gray-800 mb-2">
+              {feedType === "following"
+                ? "No posts to show"
+                : "No posts available"}
+            </h3>
+            <p className="text-gray-500 text-sm max-w-sm">
+              {feedType === "following"
+                ? "You are not following anyone yet, or the people you follow haven't posted anything."
+                : "There are no posts here yet. Be the first to share something!"}
+            </p>
+          </div>
+        )
+      )}
 
       {isFetchingNextPage && (
         <div className="flex justify-center py-6">

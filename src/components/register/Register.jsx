@@ -37,9 +37,9 @@ const registerSchema = z
   .object({
     name: z
       .string()
-      .min(1, "Name is required !!!")
-      .min(3, "the name must be at least 3 characters")
-      .max(15, "the name must be at most 15 characters"),
+      .min(1, "Name is required !")
+      .min(3, "Name must be at least 3 characters")
+      .max(15, "Name must be at most 15 characters"),
 
     username: z
       .string()
@@ -47,20 +47,20 @@ const registerSchema = z
 
     email: z
       .string()
-      .min(1, "Email is required !!!")
-      .email("Email format is invalid !!!"),
+      .min(1, "Email is required !")
+      .email("Email format is invalid !"),
 
     password: z
       .string()
-      .min(1, "Password is required !!!")
+      .min(1, "Password is required !")
       .regex(
         /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*-+=])(?!\s).{8,20}$/,
         "Password is too weak",
       ),
 
-    rePassword: z.string().min(1, "Confirmation is required !!!"),
+    rePassword: z.string().min(1, "Confirmation is required !"),
 
-    dateOfBirth: z.coerce.date("invalid date !!!").refine(
+    dateOfBirth: z.coerce.date("Invalid date !").refine(
       (date) => {
         const today = new Date();
         let age = today.getFullYear() - date.getFullYear();
@@ -73,15 +73,15 @@ const registerSchema = z
         }
         return age >= 18;
       },
-      { message: "Age must be at least 18 years !!!" },
+      { message: "Age must be at least 18 years !" },
     ),
 
     gender: z.enum(["male", "female"], {
-      errorMap: () => ({ message: "Gender is required !!!" }),
+      errorMap: () => ({ message: "Gender is required !" }),
     }),
   })
   .refine((data) => data.password === data.rePassword, {
-    message: "Passwords do not match !!",
+    message: "Passwords do not match !",
     path: ["rePassword"],
   });
 
@@ -106,10 +106,10 @@ export default function Register() {
     handleSubmit,
     register,
     formState,
-    setError,
-    getValues,
-    trigger,
-    watch,
+    // setError,
+    // getValues,
+    // trigger,
+    // watch,
   } = useForm({
     defaultValues: {
       name: "",

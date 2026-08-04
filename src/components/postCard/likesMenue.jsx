@@ -12,7 +12,6 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
-// بيانات تجريبية للأشخاص اللي عملوا لايك
 // const likersData = [
 //   {
 //     id: 1,
@@ -83,7 +82,6 @@ export default function PostLikesDropdown({ likesCount, postId }) {
           </Button>
         </DropdownTrigger>
 
-        {/* قائمة الأشخاص */}
         <DropdownMenu className="max-h-68 overflow-y-auto" aria-label="قائمة المعجبين بالبوست" variant="faded">
           {liksList.map((user) => (
             <DropdownItem
@@ -96,7 +94,6 @@ export default function PostLikesDropdown({ likesCount, postId }) {
                 className="flex items-center justify-between w-full"
                 dir="rtl"
               >
-                {/* الجزء الخاص بالصورة والاسم */}
                 <div className="flex items-center gap-3">
                   <img
                     src={user.photo}
@@ -108,7 +105,6 @@ export default function PostLikesDropdown({ likesCount, postId }) {
                   </span>
                 </div>
 
-                {/* علامة اللايك (القلب الأحمر) على الشمال */}
                 <div className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-linear-to-br from-blue-500 to-blue-600 text-white border-2 border-white z-20">
                   <BiSolidLike size={10} />
                 </div>
