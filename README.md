@@ -1,16 +1,79 @@
-# React + Vite
+# 📱 Postgram
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<p align="center">
+  <img src="./public/postgram-banner.png" alt="Postgram Banner" />
+</p>
 
-Currently, two official plugins are available:
+<p align="center">
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4-38BDF8?logo=tailwindcss)
+![React Query](https://img.shields.io/badge/TanStack_Query-FF4154?logo=reactquery)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Vercel](https://img.shields.io/badge/Deploy-Vercel-black?logo=vercel)
 
-## React Compiler
+</p>
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+<p align="center">
+A modern social media platform inspired by Facebook, built with React and Tailwind CSS.
+</p>
+## 🌍 Live Demo
 
-## Expanding the ESLint configuration
+👉 https://postgram-jade.vercel.app/
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📂 Repository
+
+👉 https://github.com/a7medabdelmon3m/POSTGRAM
+
+## 📑 Table of Contents
+
+- Features
+- Tech Stack
+- Screenshots
+- Architecture
+- Installation
+- Folder Structure
+- Future Improvements
+- Acknowledgments
+src
+├── api
+├── assets
+├── components
+├── hooks
+├── layouts
+├── pages
+├── services
+├── utils
+└── types
+
+## 📸 Screenshots
+
+### Home Feed
+
+![Home](./screenshots/home.png)
+
+### Profile
+
+![Profile](./screenshots/profile.png)
+
+### Notifications
+
+![Notifications](./screenshots/notifications.png)
+
+## 🚀 Future Improvements
+
+- Chat System
+- Dark Mode
+- Infinite Scrolling
+- Story Feature
+- PWA Support
+
+---
+
+<p align="center">
+Made with ❤️ by Ahmed Abdelmoneim
+</p>
+
+<p align="center">
+⭐ If you like this project, don't forget to give it a star.
+</p>
