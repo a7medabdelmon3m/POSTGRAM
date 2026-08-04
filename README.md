@@ -1,7 +1,7 @@
 # 📱 Postgram
 
 <p align="center">
-  <img src="./public/postgram-banner.png" alt="Postgram Banner" />
+  <img src="./screenshots/banner.png" alt="Postgram Banner" width="900">
 </p>
 
 <p align="center">
